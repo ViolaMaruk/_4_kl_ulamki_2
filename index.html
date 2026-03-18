@@ -66,34 +66,38 @@
         .pointDot { position: absolute; top: 5px; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #e67e22; border-radius: 50%; z-index: 2; }
         .pointMarker { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); color: #e67e22; font-weight: bold; font-style: italic; font-size: 1.2em; }
 
-        /* СТИЛИ ДЛЯ ИНТЕЛЛЕКТУАЛЬНЫХ ОКОН ВВОДА ОТВЕТА */
-        .input-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px;}
+        /* --- ОБНОВЛЕННЫЕ, ШИРОКИЕ ОКНА ВВОДА --- */
+        .input-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-top: 15px;}
         
         .inputContainerFrac {
-            display: inline-flex; align-items: center; gap: 5px; font-family: 'Georgia', serif;
-            font-size: 1.1em; padding: 4px; border-radius: 6px; background: #f8f9fa; border: 1px solid #e2e8f0;
+            display: inline-flex; align-items: center; gap: 8px; font-family: 'Georgia', serif;
+            font-size: 1.2em; padding: 8px; border-radius: 8px; background: #f8f9fa; border: 2px solid #cbd5e1;
         }
         .inputContainerFrac input {
-            border: none; border-bottom: 2px solid #ccc; text-align: center; border-radius: 0;
-            padding: 2px; outline: none; transition: border-color 0.2s; background: transparent;
+            border: none; border-bottom: 2px solid #94a3b8; text-align: center; border-radius: 0;
+            padding: 4px; outline: none; transition: border-color 0.2s; background: transparent;
         }
         .inputContainerFrac input:focus { border-color: #3498db; }
-        .inputInt { width: 35px; font-size: 1.1em; font-weight: bold; }
-        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 40px; line-height: 1; }
-        .inputNum, .inputDen { width: 100%; font-size: 0.9em; padding: 1px; }
+        
+        /* Увеличенная ширина для целой части */
+        .inputInt { width: 55px; font-size: 1.2em; font-weight: bold; }
+        
+        /* Увеличенная ширина для числителя и знаменателя */
+        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 55px; line-height: 1.2; }
+        .inputNum, .inputDen { width: 100%; font-size: 1.1em; padding: 2px; }
         .inputDen { border-bottom: none; }
-        .inputLine { width: 100%; height: 2px; background: #333; margin: 2px 0; }
+        .inputLine { width: 100%; height: 2px; background: #333; margin: 3px 0; }
 
         /* ВЫПАДАЮЩИЙ СПИСОК ДЛЯ СРАВНЕНИЯ ДРОБЕЙ */
         select.compareSelect {
-            font-size: 1.2em; padding: 5px 10px; font-weight: bold; color: #2c3e50;
-            border: 2px solid #e2e8f0; border-radius: 6px; cursor: pointer; outline: none;
+            font-size: 1.2em; padding: 8px 12px; font-weight: bold; color: #2c3e50;
+            border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; outline: none; background: #f8f9fa;
         }
         select.compareSelect:focus { border-color: #3498db; }
 
         button {
-            background-color: #3498db; color: white; border: none; padding: 10px 20px;
-            font-size: 1em; border-radius: 6px; cursor: pointer; transition: 0.2s;
+            background-color: #3498db; color: white; border: none; padding: 12px 24px;
+            font-size: 1.05em; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: bold;
         }
         button:hover { background-color: #2980b9; }
         button.btn-hint { background-color: #f39c12; }
@@ -101,10 +105,10 @@
         button.btn-answer { background-color: #9b59b6; }
         button.btn-answer:hover { background-color: #8e44ad; }
         
-        .feedback { font-weight: bold; margin-left: 10px; }
+        .feedback { font-weight: bold; margin-left: 10px; font-size: 1.1em;}
         .correct { color: #1e8449; }
         .incorrect { color: #c0392b; }
-        .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; font-style: normal; color: #856404; border-radius: 0 6px 6px 0; }
+        .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; font-style: normal; color: #856404; border-radius: 0 6px 6px 0; font-size: 1.05em;}
 
         #start-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: white; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
@@ -168,7 +172,6 @@
             document.getElementById("app-content").style.display = "block";
         }
 
-        // ГЕНЕРАТОР ЧИСЛОВОЙ ОСИ
         function generateNumberLineHTML(start, end, segments, points) {
             let html = '<div class="numberLineContainer"><div class="numberLineTrack"></div><div class="numberLineTicks">';
             let totalTicks = (end - start) * segments;
@@ -187,7 +190,6 @@
             return html;
         }
 
-        // БЕЗОПАСНЫЙ ПАРСЕР ДРОБЕЙ
         function renderFractionEquationHTML(latex) {
             if (!latex) return '';
             let text = latex.replace(/\$/g, '');
@@ -305,7 +307,6 @@
             `;
         });
 
-        // ПРОВЕРКА СРАВНЕНИЙ
         function checkAnswerCompare(taskId) {
             const canonical = tasksData.find(t => t.id === taskId).can;
             const selectEl = document.getElementById(`input_${taskId}`);
@@ -352,7 +353,6 @@
             resultsData[taskId] = "Podglądał odpowiedź";
         }
 
-        // ПРОВЕРКА ДРОБЕЙ
         const valFromField = (id) => {
             const v = document.getElementById(id).value.trim();
             return v ? Number(v) : 0;
