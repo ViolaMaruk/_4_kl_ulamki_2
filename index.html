@@ -44,7 +44,7 @@
         .task-card.incorrect-bg { background-color: #f8d7da; border-left-color: #dc3545; }
         .task-text { font-size: 1.2em; margin-bottom: 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;}
         
-        /* СТИЛИ ДЛЯ ИДЕАЛЬНОЙ ОТРИСОВКИ ДРОБЕЙ В ТЕКСТЕ ЗАДАНИЯ */
+        /* СТИЛИ ДЛЯ ИДЕАЛЬНОЙ ОТРИСОВКИ ДРОБЕЙ */
         .eqContainer { display: inline-flex; align-items: center; gap: 4px; font-family: 'Georgia', serif; font-size: 1.1em;}
         .fracComp { display: inline-flex; align-items: center;}
         .fracComp.mixed { gap: 3px; }
@@ -66,60 +66,26 @@
         .pointDot { position: absolute; top: 5px; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #e67e22; border-radius: 50%; z-index: 2; }
         .pointMarker { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); color: #e67e22; font-weight: bold; font-style: italic; font-size: 1.2em; }
 
-        /* --- НОВЫЙ ДИЗАЙН ОКОН ВВОДА (КАК В ПРИЛОЖЕНИИ) --- */
+        /* --- ОКНА ВВОДА --- */
         .input-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-top: 15px;}
         
         .inputContainerFrac {
             display: inline-flex; align-items: center; gap: 12px; font-family: 'Segoe UI', Tahoma, sans-serif;
         }
         
-        /* Общие стили для всех квадратиков ввода */
         .inputContainerFrac input {
-            background: #fff;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #2c3e50;
-            outline: none;
-            transition: all 0.2s;
+            background: #fff; border: 2px solid #cbd5e1; border-radius: 8px; text-align: center;
+            font-size: 1.3em; font-weight: bold; color: #2c3e50; outline: none; transition: all 0.2s;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
+        .inputContainerFrac input:focus { border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); }
         
-        /* Эффект при клике на квадратик */
-        .inputContainerFrac input:focus { 
-            border-color: #3498db; 
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-        
-        /* Квадратик для целой части */
-        .inputInt { 
-            width: 50px; 
-            height: 50px; 
-        }
-        
-        /* Контейнер для числителя и знаменателя */
-        .inputFracBox { 
-            display: flex; flex-direction: column; align-items: center; width: 55px; 
-        }
-        
-        /* Квадратики числителя и знаменателя */
-        .inputNum, .inputDen { 
-            width: 100%; 
-            height: 45px; 
-        }
-        
-        /* Толстая линия дроби (чуть шире самих окошек) */
-        .inputLine { 
-            width: 120%; 
-            height: 3px; 
-            background: #333; 
-            margin: 6px 0; 
-            border-radius: 2px;
-        }
+        .inputInt { width: 50px; height: 50px; }
+        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 55px; }
+        .inputNum, .inputDen { width: 100%; height: 45px; }
+        .inputLine { width: 120%; height: 3px; background: #333; margin: 6px 0; border-radius: 2px;}
 
-        /* ВЫПАДАЮЩИЙ СПИСОК (для сравнения дробей) */
+        /* ВЫПАДАЮЩИЙ СПИСОК */
         select.compareSelect {
             font-size: 1.2em; padding: 8px 12px; font-weight: bold; color: #2c3e50;
             border: 2px solid #cbd5e1; border-radius: 8px; cursor: pointer; outline: none; background: #fff;
@@ -170,13 +136,13 @@
 
     <div id="app-content">
         <div class="header-container">
-            <h1>Ułamki Zwykłe - Nowe Zadania</h1>
+            <h1>Ułamki Zwykłe - Mega Trening</h1>
             <p class="description">Porównywanie, oś liczbowa, skracanie i wyłączanie całości.</p>
             <div class="instructions">
                 <b>📌 Ważne wskazówki przed startem:</b><br>
                 1. <b>Skracanie i całości:</b> Wpisuj odpowiedzi w najprostszej postaci (np. skróć ułamek i wyłącz całość).<br>
                 2. <b>Wypełnianie:</b> Pierwsze pole po lewej to całości. Górne pole to licznik, dolne to mianownik.<br>
-                3. Jeśli odpowiedź to sama liczba całkowita, wypełnij tylko pole całości. Jeśli sam ułamek - tylko licznik i mianownik.
+                3. Jeśli odpowiedź to sama liczba całkowita, wypełnij tylko pole całości. Jeśli sam ułamek - tylko licznik i mianownik (w polu całości możesz zostawić puste lub wpisać 0).
             </div>
         </div>
 
@@ -244,43 +210,78 @@
             return `<div class="eqContainer">${text}</div>`;
         }
 
+        // PEŁNA BAZA ZADAŃ (Z NOWĄ NUMERACJĄ OD 1)
         const tasksData = [
-            // PORÓWNYWANIE
-            { id: "c1", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{2}{9}$", eq2: "$\\frac{5}{9}$", can: "<", hint: "Mianowniki są takie same, więc ułamek z większym licznikiem jest większy." },
-            { id: "c2", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{15}{21}$", eq2: "$\\frac{13}{21}$", can: ">", hint: "Większy licznik oznacza większy ułamek (przy tym samym mianowniku)." },
-            { id: "c3", type: "compare", text: "Porównaj podane liczby:", eq1: "$2\\frac{1}{4}$", eq2: "$3\\frac{3}{4}$", can: "<", hint: "Najpierw patrz na całości. 2 jest mniejsze od 3." },
-            { id: "c4", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{7}{11}$", eq2: "$\\frac{7}{15}$", can: ">", hint: "Gdy liczniki są takie same, ten ułamek jest większy, który ma MNIEJSZY mianownik (kawałki tortu są większe)." },
+            // PORÓWNYWANIE (12 ZADAŃ)
+            { id: "c_a", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{2}{9}$", eq2: "$\\frac{5}{9}$", can: "<", hint: "Gdy mianowniki są równe, większy ułamek ma większy licznik." },
+            { id: "c_b", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{15}{21}$", eq2: "$\\frac{13}{21}$", can: ">", hint: "Gdy mianowniki są równe, większy ułamek ma większy licznik." },
+            { id: "c_c", type: "compare", text: "Porównaj podane liczby:", eq1: "$2\\frac{1}{4}$", eq2: "$3\\frac{3}{4}$", can: "<", hint: "Zwróć uwagę na liczby całkowite." },
+            { id: "c_d", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{1}{16}$", eq2: "$\\frac{1}{17}$", can: ">", hint: "Gdy liczniki są równe, WIĘKSZY jest ten ułamek, który ma MNIEJSZY mianownik." },
+            { id: "c_e", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{7}{11}$", eq2: "$\\frac{7}{15}$", can: ">", hint: "Gdy liczniki są równe, WIĘKSZY jest ten ułamek, który ma MNIEJSZY mianownik." },
+            { id: "c_f", type: "compare", text: "Porównaj podane liczby:", eq1: "$5\\frac{1}{6}$", eq2: "$5\\frac{1}{9}$", can: ">", hint: "Całości są równe. Porównaj same ułamki. Który ma mniejszy mianownik?" },
+            { id: "c_g", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{1}{8}$", eq2: "$\\frac{1}{11}$", can: ">", hint: "Mniejsze kawałki (z 11) czy większe kawałki (z 8)?" },
+            { id: "c_h", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{4}{7}$", eq2: "$\\frac{4}{13}$", can: ">", hint: "Gdy liczniki są równe, ułamek o mniejszym mianowniku jest większy." },
+            { id: "c_i", type: "compare", text: "Porównaj podane liczby:", eq1: "$4\\frac{3}{7}$", eq2: "$5\\frac{3}{10}$", can: "<", hint: "Popatrz na całości! 4 jest mniejsze od 5." },
+            { id: "c_j", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{7}{15}$", eq2: "$\\frac{8}{15}$", can: "<", hint: "Większy licznik oznacza większy ułamek." },
+            { id: "c_k", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{5}{8}$", eq2: "$\\frac{5}{9}$", can: ">", hint: "Liczniki są równe, patrzymy na mianowniki." },
+            { id: "c_l", type: "compare", text: "Porównaj podane liczby:", eq1: "$5\\frac{3}{8}$", eq2: "$6\\frac{4}{9}$", can: "<", hint: "Popatrz tylko na całości." },
 
-            // OŚ LICZBOWA
-            { id: "l1", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>a</b>:",
-              customHTML: generateNumberLineHTML(0, 3, 2, [{val: 0.5, label: 'a'}]),
-              can: {int: 0, num: 1, den: 2}, hint: "Odcinek od 0 do 1 jest podzielony na 2 równe części." },
-            { id: "l2", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>c</b>:",
-              customHTML: generateNumberLineHTML(2, 5, 2, [{val: 3.5, label: 'c'}]),
-              can: {int: 3, num: 1, den: 2}, hint: "Punkt c znajduje się dokładnie pośrodku między 3 a 4." },
-            { id: "l3", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>j</b>:",
-              customHTML: generateNumberLineHTML(54, 57, 4, [{val: 55.75, label: 'j'}]),
-              can: {int: 55, num: 3, den: 4}, hint: "Odcinek od 55 do 56 dzieli się na 4 części. Punkt j leży na 3. małej kresce za 55." },
-            { id: "l4", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>n</b>:",
-              customHTML: generateNumberLineHTML(18, 21, 5, [{val: 19.6, label: 'n'}]),
-              can: {int: 19, num: 3, den: 5}, hint: "Każda jednostka podzielona jest na 5 części. Punkt n to 3 kreski za liczbą 19." },
+            // OŚ LICZBOWA (16 ZADAŃ)
+            { id: "l_a", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>a</b>:", customHTML: generateNumberLineHTML(0, 1, 4, [{val: 0.25, label: 'a'}]), can: {int: 0, num: 1, den: 4}, hint: "Jedna całość podzielona jest na 4 części." },
+            { id: "l_b", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>b</b>:", customHTML: generateNumberLineHTML(1, 2, 4, [{val: 1.25, label: 'b'}]), can: {int: 1, num: 1, den: 4}, hint: "Jedna mała kreska to $\\frac{1}{4}$." },
+            { id: "l_c", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>c</b>:", customHTML: generateNumberLineHTML(3, 4, 4, [{val: 3.75, label: 'c'}]), can: {int: 3, num: 3, den: 4}, hint: "To jest trzecia kreska za cyfrą 3." },
+            { id: "l_d", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>d</b>:", customHTML: generateNumberLineHTML(5, 6, 4, [{val: 5.25, label: 'd'}]), can: {int: 5, num: 1, den: 4}, hint: "To jest pierwsza kreska za 5." },
+            { id: "l_e", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>e</b>:", customHTML: generateNumberLineHTML(6, 7, 4, [{val: 6.5, label: 'e'}]), can: {int: 6, num: 1, den: 2}, hint: "Druga kreska za 6 to $\\frac{2}{4}$. Pamiętaj o SKRÓCENIU ułamka!" },
+            { id: "l_f", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>f</b>:", customHTML: generateNumberLineHTML(6, 7, 4, [{val: 6.75, label: 'f'}]), can: {int: 6, num: 3, den: 4}, hint: "Trzecia kreska za cyfrą 6." },
+            { id: "l_g", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>g</b>:", customHTML: generateNumberLineHTML(53, 54, 5, [{val: 53.4, label: 'g'}]), can: {int: 53, num: 2, den: 5}, hint: "Całość od 53 do 54 podzielono na 5 części. To jest 2 kreska." },
+            { id: "l_h", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>h</b>:", customHTML: generateNumberLineHTML(54, 55, 5, [{val: 54.4, label: 'h'}]), can: {int: 54, num: 2, den: 5}, hint: "Druga kreska za 54, mianownik to 5." },
+            { id: "l_i", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>i</b>:", customHTML: generateNumberLineHTML(55, 56, 5, [{val: 55.6, label: 'i'}]), can: {int: 55, num: 3, den: 5}, hint: "Trzecia kreska za 55." },
+            { id: "l_j", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>j</b>:", customHTML: generateNumberLineHTML(55, 56, 5, [{val: 55.8, label: 'j'}]), can: {int: 55, num: 4, den: 5}, hint: "Czwarta kreska za 55." },
+            { id: "l_k", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>k</b>:", customHTML: generateNumberLineHTML(56, 57, 5, [{val: 56.6, label: 'k'}]), can: {int: 56, num: 3, den: 5}, hint: "Trzecia kreska za 56." },
+            { id: "l_l", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>l</b>:", customHTML: generateNumberLineHTML(17, 18, 3, [{val: 17.333, label: 'l'}]), can: {int: 17, num: 1, den: 3}, hint: "Odcinek dzieli się na 3 części. To jest pierwsza kreska." },
+            { id: "l_m", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>m</b>:", customHTML: generateNumberLineHTML(18, 19, 3, [{val: 18.666, label: 'm'}]), can: {int: 18, num: 2, den: 3}, hint: "Druga kreska za 18." },
+            { id: "l_n", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>n</b>:", customHTML: generateNumberLineHTML(19, 20, 3, [{val: 19.666, label: 'n'}]), can: {int: 19, num: 2, den: 3}, hint: "Druga kreska za 19." },
+            { id: "l_o", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>o</b>:", customHTML: generateNumberLineHTML(20, 21, 3, [{val: 20.333, label: 'o'}]), can: {int: 20, num: 1, den: 3}, hint: "Pierwsza kreska za 20." },
+            { id: "l_p", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>p</b>:", customHTML: generateNumberLineHTML(21, 22, 3, [{val: 21.666, label: 'p'}]), can: {int: 21, num: 2, den: 3}, hint: "Druga kreska za 21." },
 
-            // SKRACANIE
-            { id: "s1", type: "frac", text: "Zamień podany ułamek na nieskracalny (skróć):", eq: "$\\frac{15}{35}$", can: {int: 0, num: 3, den: 7}, hint: "Podziel licznik i mianownik przez ich wspólny dzielnik (5)." },
-            { id: "s2", type: "frac", text: "Zamień podany ułamek na nieskracalny (skróć):", eq: "$\\frac{24}{36}$", can: {int: 0, num: 2, den: 3}, hint: "Największy wspólny dzielnik dla 24 i 36 to 12." },
-            { id: "s3", type: "frac", text: "Zamień podany ułamek na nieskracalny (skróć):", eq: "$\\frac{48}{84}$", can: {int: 0, num: 4, den: 7}, hint: "Obie liczby dzielą się przez 12." },
-            { id: "s4", type: "frac", text: "Zamień podany ułamek na nieskracalny (skróć):", eq: "$\\frac{10}{1000}$", can: {int: 0, num: 1, den: 100}, hint: "Skreśl po jednym zerze." },
+            // ZAMIEŃ NA UŁAMKI NIESKRACALNE (12 ZADAŃ)
+            { id: "s_1", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{15}{35}$", can: {int: 0, num: 3, den: 7}, hint: "Podziel przez 5." },
+            { id: "s_2", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{24}{36}$", can: {int: 0, num: 2, den: 3}, hint: "Podziel przez 12." },
+            { id: "s_3", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{32}{160}$", can: {int: 0, num: 1, den: 5}, hint: "Ile razy 32 mieści się w 160? Równo 5!" },
+            { id: "s_4", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{45}{100}$", can: {int: 0, num: 9, den: 20}, hint: "Podziel licznik i mianownik przez 5." },
+            { id: "s_5", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{26}{65}$", can: {int: 0, num: 2, den: 5}, hint: "Obie liczby dzielą się przez 13!" },
+            { id: "s_6", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{48}{84}$", can: {int: 0, num: 4, den: 7}, hint: "Podziel przez 12." },
+            { id: "s_7", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{10}{1000}$", can: {int: 0, num: 1, den: 100}, hint: "Skreśl po jednym zerze." },
+            { id: "s_8", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{22}{88}$", can: {int: 0, num: 1, den: 4}, hint: "Podziel przez 22." },
+            // NOWE 4 ZADANIA:
+            { id: "s_9", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{18}{27}$", can: {int: 0, num: 2, den: 3}, hint: "Podziel przez 9." },
+            { id: "s_10", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{14}{49}$", can: {int: 0, num: 2, den: 7}, hint: "Podziel przez 7." },
+            { id: "s_11", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{75}{125}$", can: {int: 0, num: 3, den: 5}, hint: "Podziel licznik i mianownik przez 25." },
+            { id: "s_12", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{16}{64}$", can: {int: 0, num: 1, den: 4}, hint: "Podziel obie liczby przez 16." },
 
-            // WYŁĄCZANIE CAŁOŚCI
-            { id: "w1", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{13}{2}$", can: {int: 6, num: 1, den: 2}, hint: "Podziel 13 przez 2. Wynik to całości, a reszta idzie do licznika." },
-            { id: "w2", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{34}{3}$", can: {int: 11, num: 1, den: 3}, hint: "34 podzielone przez 3 daje 11 całości (bo 33 : 3 = 11) i resztę 1." },
-            { id: "w3", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{28}{4}$", can: {int: 7, num: 0, den: 0}, hint: "Ułamek to znak dzielenia. Tutaj dzieli się bez reszty!" },
-            { id: "w4", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{79}{10}$", can: {int: 7, num: 9, den: 10}, hint: "Ile pełnych dziesiątek mieści się w 79?" }
+            // WYŁĄCZ CAŁOŚCI Z UŁAMKÓW (12 ZADAŃ)
+            { id: "w_a1", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{9}{2}$", can: {int: 4, num: 1, den: 2}, hint: "Ile dwójek mieści się w 9?" },
+            { id: "w_a2", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{13}{2}$", can: {int: 6, num: 1, den: 2}, hint: "13 : 2 = 6 reszta 1." },
+            { id: "w_a3", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{25}{2}$", can: {int: 12, num: 1, den: 2}, hint: "25 : 2 = 12 reszta 1." },
+            
+            { id: "w_b1", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{14}{3}$", can: {int: 4, num: 2, den: 3}, hint: "Ile trójek mieści się w 14?" },
+            { id: "w_b2", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{21}{3}$", can: {int: 7, num: 0, den: 0}, hint: "Tutaj dzieli się bez reszty!" },
+            { id: "w_b3", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{34}{3}$", can: {int: 11, num: 1, den: 3}, hint: "33 dzieli się na 3. Zostaje 1." },
+
+            { id: "w_c1", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{15}{4}$", can: {int: 3, num: 3, den: 4}, hint: "Ile czwórek mieści się w 15?" },
+            { id: "w_c2", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{28}{4}$", can: {int: 7, num: 0, den: 0}, hint: "Dzieli się bez reszty." },
+            { id: "w_c3", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{47}{4}$", can: {int: 11, num: 3, den: 4}, hint: "Ile czwórek mieści się w 47?" },
+
+            { id: "w_d1", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{31}{10}$", can: {int: 3, num: 1, den: 10}, hint: "W 31 mieszczą się 3 dziesiątki." },
+            { id: "w_d2", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{79}{10}$", can: {int: 7, num: 9, den: 10}, hint: "W 79 mieści się 7 dziesiątek." },
+            { id: "w_d3", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{130}{10}$", can: {int: 13, num: 0, den: 0}, hint: "Dzieli się bez reszty!" }
         ];
 
         const container = document.getElementById("tasks-container");
 
-        tasksData.forEach((task) => {
+        // ТУТ МЫ ГЕНЕРИРУЕМ ЗАДАЧИ С НОРМАЛЬНОЙ НУМЕРАЦИЕЙ ОТ 1
+        tasksData.forEach((task, index) => {
+            let taskNumber = index + 1; // Получаем номер от 1 до 52
             resultsData[task.id] = "Nie rozwiązano"; 
             userAttemptsStructures[task.id] = [];
             
@@ -332,7 +333,7 @@
             container.innerHTML += `
                 <div class="task-card" id="card_${task.id}">
                     <div class="task-text">
-                        <strong>Zadanie ${task.id.toUpperCase()}:</strong> ${task.text}
+                        <strong>Zadanie ${taskNumber}.</strong> ${task.text}
                     </div>
                     ${taskContent}
                     <div id="hint_${task.id}" class="hint-text">💡 <strong>Wskazówka:</strong> ${task.hint}</div>
@@ -465,9 +466,8 @@
             let correctCount = 0; let hintCount = 0; let notSolvedCount = 0;
             let detailedReport = "";
 
-            tasksData.forEach((task) => {
-                const taskIdUpper = task.id.toUpperCase();
-                
+            tasksData.forEach((task, index) => {
+                let taskNumber = index + 1;
                 let answerDetails = "";
                 let wrongAttemptsString = "";
 
@@ -488,15 +488,15 @@
 
                 if(resultsData[task.id] === "Samodzielnie") {
                     correctCount++;
-                    detailedReport += `Zad ${taskIdUpper}: Samodzielnie ${wrongAttemptsString} | Odp: ${answerDetails}\n`;
+                    detailedReport += `Zadanie ${taskNumber}: Samodzielnie ${wrongAttemptsString} | Odp: ${answerDetails}\n`;
                 }
                 else if(resultsData[task.id] === "Podglądał odpowiedź") {
                     hintCount++;
-                    detailedReport += `Zad ${taskIdUpper}: Użył odpowiedzi ${wrongAttemptsString}\n`;
+                    detailedReport += `Zadanie ${taskNumber}: Użył odpowiedzi ${wrongAttemptsString}\n`;
                 }
                 else {
                     notSolvedCount++;
-                    detailedReport += `Zad ${taskIdUpper}: Nie rozwiązano\n`;
+                    detailedReport += `Zadanie ${taskNumber}: Nie rozwiązano\n`;
                 }
             });
 
@@ -512,7 +512,7 @@
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
                     access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa", 
-                    subject: `Wyniki (Nowe Ułamki Zwykłe): ${currentStudent} (${currentClass})`,
+                    subject: `Wyniki (Nowe Ułamki Zwykłe - 52 zadania): ${currentStudent} (${currentClass})`,
                     from_name: "Test Matematyczny",
                     message: finalMessage
                 })
