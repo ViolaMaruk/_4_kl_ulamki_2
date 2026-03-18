@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dodawanie i Odejmowanie Ułamków Zwykłych</title>
+    <title>Ułamki Zwykłe - Nowe Wyzwania</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -42,10 +42,10 @@
         }
         .task-card.correct-bg { background-color: #d4edda; border-left-color: #28a745; }
         .task-card.incorrect-bg { background-color: #f8d7da; border-left-color: #dc3545; }
-        .task-text { font-size: 1.2em; margin-bottom: 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;}
+        .task-text { font-size: 1.2em; margin-bottom: 10px; }
         
-        /* СТИЛИ ДЛЯ ВЕЛИКОЛЕПНОЙ ОТРИСОВКИ ДРОБЕЙ (ВИЗУАЛЬНАЯ ЧАСТЬ) */
-        .fraction-equation-container { display: flex; align-items: center; gap: 4px; font-family: 'Georgia', serif; font-size: 1.1em;}
+        /* СТИЛИ ДЛЯ ВЕЛИКОЛЕПНОЙ ОТРИСОВКИ ДРОБЕЙ */
+        .fraction-equation-container { display: inline-flex; align-items: center; gap: 4px; font-family: 'Georgia', serif; font-size: 1.2em;}
         .fraction-equation-container .frac-component { display: inline-flex; align-items: center;}
         .fraction-equation-container .frac-component.mixed { gap: 3px; }
         .fraction-equation-container .frac-component .int-part { font-size: 1.2em; font-weight: bold;}
@@ -55,74 +55,30 @@
         .fraction-equation-container .frac-component .frac-box-visual .frac-line-visual { width: 100%; height: 1.5px; background: #333; margin: 1px 0;}
         .fraction-equation-container .operator { font-size: 1.2em; font-weight: bold; margin: 0 4px; color: #555;}
         
-        /* СТИЛИ ДЛЯ ИНТЕЛЛЕКТУАЛЬНЫХ КОМПОНЕНТОВ ВВОДА ДРОБЕЙ (ПОЛЕ ВВОДА) */
-        .input-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px;}
-        
-        /* Основной контейner для ввода дроби */
-        .mixed-fraction-input-container {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-family: 'Georgia', serif;
-            font-size: 1.1em;
-            padding: 4px;
-            border-radius: 6px;
-        }
-        
-        /* Общие стили для полей ввода внутри компонента */
-        .mixed-fraction-input-container input {
-            border: none;
-            border-bottom: 2px solid #e2e8f0;
-            text-align: center;
-            border-radius: 0;
-            padding: 2px;
-            outline: none;
-            transition: border-color 0.2s;
-            background: transparent;
-        }
-        .mixed-fraction-input-container input:focus { border-color: #3498db; }
-        
-        /* Поле для целой части */
-        .mixed-fraction-input-container .frac-int-input {
-            width: 35px;
-            font-size: 1.1em;
-            font-weight: bold;
-        }
-        
-        /* Контейнер для собственно дроби (числитель, линия, знаменатель) */
-        .mixed-fraction-input-container .frac-box-input {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 40px;
-            line-height: 1;
-        }
-        
-        /* Стили для числителя и знаменателя */
-        .mixed-fraction-input-container .frac-num-input,
-        .mixed-fraction-input-container .frac-den-input {
-            width: 100%;
-            font-size: 0.9em;
-            padding: 1px;
-        }
-        
-        /* Стили для знаменателя (убираем нижнюю рамку, добавляем верхнюю линию через border-box container) */
-        .mixed-fraction-input-container .frac-den-input {
-            border-bottom: none;
-        }
-        
-        /* Визуальная линия дроби внутри компонента ввода */
-        .mixed-fraction-input-container .frac-box-input .frac-line-input {
-            width: 100%;
-            height: 1.5px;
-            background: #333;
-            margin: 1px 0;
-        }
+        /* СТИЛИ ДЛЯ ЧИСЛОВОЙ ОСИ (ГЕНЕРИРУЕТСЯ КОДОМ) */
+        .number-line-container { position: relative; height: 60px; margin: 30px 20px 30px 20px; }
+        .number-line-track { position: absolute; top: 30px; left: 0; right: 0; height: 2px; background: #333; }
+        .number-line-track::after { content: ''; position: absolute; right: -10px; top: -4px; border-width: 5px 0 5px 10px; border-style: solid; border-color: transparent transparent transparent #333; }
+        .number-line-ticks { position: absolute; top: 25px; left: 0; right: 0; height: 10px; }
+        .tick { position: absolute; width: 2px; background: #333; transform: translateX(-50%); }
+        .tick.major { top: 0; height: 12px; }
+        .tick.minor { top: 2px; height: 8px; }
+        .tick-label { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); font-size: 0.95em; font-weight: bold; }
+        .point-dot { position: absolute; top: 5px; left: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; background: #e67e22; border-radius: 50%; z-index: 2; }
+        .point-marker { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); color: #e67e22; font-weight: bold; font-style: italic; font-size: 1.1em; }
 
-        button {
-            background-color: #3498db; color: white; border: none; padding: 10px 20px;
-            font-size: 1em; border-radius: 6px; cursor: pointer; transition: 0.2s;
-        }
+        /* ИНТЕЛЛЕКТУАЛЬНЫЕ КОМПОНЕНТЫ ВВОДА ДРОБЕЙ */
+        .input-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 15px;}
+        .mixed-fraction-input-container { display: inline-flex; align-items: center; gap: 5px; font-family: 'Georgia', serif; font-size: 1.2em; padding: 4px; border-radius: 6px; }
+        .mixed-fraction-input-container input { border: none; border-bottom: 2px solid #e2e8f0; text-align: center; border-radius: 0; padding: 2px; outline: none; transition: border-color 0.2s; background: transparent; }
+        .mixed-fraction-input-container input:focus { border-color: #3498db; }
+        .mixed-fraction-input-container .frac-int-input { width: 35px; font-size: 1.1em; font-weight: bold; }
+        .mixed-fraction-input-container .frac-box-input { display: flex; flex-direction: column; align-items: center; width: 40px; line-height: 1; }
+        .mixed-fraction-input-container .frac-num-input, .mixed-fraction-input-container .frac-den-input { width: 100%; font-size: 0.9em; padding: 1px; }
+        .mixed-fraction-input-container .frac-den-input { border-bottom: none; }
+        .mixed-fraction-input-container .frac-box-input .frac-line-input { width: 100%; height: 1.5px; background: #333; margin: 1px 0; }
+
+        button { background-color: #3498db; color: white; border: none; padding: 10px 20px; font-size: 1em; border-radius: 6px; cursor: pointer; transition: 0.2s; }
         button:hover { background-color: #2980b9; }
         button.btn-hint { background-color: #f39c12; }
         button.btn-hint:hover { background-color: #d68910; }
@@ -134,28 +90,14 @@
         .incorrect { color: #c0392b; }
         .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; font-style: normal; color: #856404; border-radius: 0 6px 6px 0; }
 
-        #start-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); display: flex; justify-content: center;
-            align-items: center; z-index: 1000;
-        }
-        .modal-content {
-            background: white; padding: 40px; border-radius: 12px; text-align: center;
-            max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .modal-content input {
-            width: 100%; margin-bottom: 15px; padding: 10px; box-sizing: border-box; text-align: center;
-            font-size: 1.1em; border: 2px solid #e2e8f0; border-radius: 6px;
-        }
+        #start-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .modal-content input { width: 100%; margin-bottom: 15px; padding: 10px; box-sizing: border-box; text-align: center; font-size: 1.1em; border: 2px solid #e2e8f0; border-radius: 6px; }
         .modal-content button { width: 100%; font-size: 1.1em; padding: 12px; background-color: #27ae60;}
         .modal-content button:hover { background-color: #2ecc71;}
         
         #app-content { display: none; }
-        
-        .finish-container {
-            text-align: center; background: rgba(255,255,255,0.95); padding: 30px;
-            border-radius: 12px; margin-top: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
+        .finish-container { text-align: center; background: rgba(255,255,255,0.95); padding: 30px; border-radius: 12px; margin-top: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
         .btn-finish { background-color: #e74c3c; font-size: 1.2em; padding: 15px 30px; }
         .btn-finish:hover { background-color: #c0392b; }
     </style>
@@ -175,13 +117,12 @@
 
     <div id="app-content">
         <div class="header-container">
-            <h1>Ułamki Zwykłe</h1>
-            <p class="description">Dodawanie i odejmowanie ułamków zwykłych i liczb mieszanych.</p>
+            <h1>Ułamki - Nowe Zadania</h1>
+            <p class="description">Oś liczbowa, skracanie ułamków i wyłączanie całości.</p>
             <div class="instructions">
                 <b>📌 Ważne wskazówki przed startem:</b><br>
-                1. <b>Wpisuj odpowiedzi w najprostszej postaci</b> (np. $\frac{1}{2}$ zamiast $\frac{2}{4}$ lub 1 zamiast $\frac{3}{3}$).<br>
-                2. <b>Separator pól:</b> Pole po lewej to liczba całkowita, pole na górze po prawej to licznik, pole na dole po prawej to mianownik.<br>
-                3. Jeśli wynik to sama liczba całkowita, wypełnij tylko pole po lewej, resztę zostaw pustą lub wpisz 0. Jeśli to sam ułamek, wypełnij tylko licznik i mianownik.
+                1. <b>Wpisuj odpowiedzi w najprostszej postaci</b> (po skróceniu i z wyłączonymi całościami).<br>
+                2. W okienkach wpisuj liczby zgodnie z układem: po lewej całości, po prawej ułamek. Jeśli nie ma całości – zostaw pole puste.
             </div>
         </div>
 
@@ -197,56 +138,53 @@
         let currentStudent = "";
         let currentClass = "";
         let resultsData = {}; 
-        let userAttemptsStructures = {}; // Скрытое хранилище для структур ответов
+        let userAttemptsStructures = {}; 
 
         function startTest() {
             const nameInput = document.getElementById("student-name").value.trim();
             const classInput = document.getElementById("student-class").value.trim();
-            
             if(nameInput === "" || classInput === "") {
-                document.getElementById("modal-error").style.display = "block";
-                return;
+                document.getElementById("modal-error").style.display = "block"; return;
             }
-            
-            currentStudent = nameInput;
-            currentClass = classInput;
-            
+            currentStudent = nameInput; currentClass = classInput;
             document.getElementById("start-modal").style.display = "none";
             document.getElementById("app-content").style.display = "block";
         }
 
-        // БАЗА ЗАДАНИЙ С КРАСИВЫМИ УРАВНЕНИЯМИ И КАНОНИЧЕСКИМИ СТРУКТУРАМИ ОТВЕТОВ
-        const tasksData = [
-            // SEKCJA 1: Odejmowanie mixed zintegers/mixed
-            { id: "a", eq: "$2\\frac{2}{3} - \\frac{2}{3}$", can: {int: 2, num: 0, den: 0}, hintTitle: "Wskazówka", hint: "Po odjęciu ułamka zostanie sama liczba całkowita." },
-            { id: "b", eq: "$2\\frac{1}{3} - 1\\frac{2}{3}$", can: {int: 0, num: 2, den: 3}, hintTitle: "Wskazówka", hint: "Musisz 'zamienić' jedność w odjemnej. Zrób: $1\\frac{4}{3} - 1\\frac{2}{3}$" },
-            { id: "c", eq: "$2 - \\frac{2}{3}$", can: {int: 1, num: 1, den: 3}, hintTitle: "Wskazówka", hint: "Zamień 2 całości na $1\\frac{3}{3}$" },
-            { id: "d", eq: "$4 - 1\\frac{2}{3}$", can: {int: 2, num: 1, den: 3}, hintTitle: "Wskazówka", hint: "Zamień 4 całości na $3\\frac{3}{3}$ i wykonaj odejmowanie." },
+        // ГЕНЕРАТОР ЧИСЛОВОЙ ОСИ (Чистый CSS+HTML)
+        function generateNumberLineHTML(start, end, segments, points) {
+            let html = '<div class="number-line-container"><div class="number-line-track"></div><div class="number-line-ticks">';
+            let totalTicks = (end - start) * segments;
+            for (let i = 0; i <= totalTicks; i++) {
+                let isMajor = (i % segments === 0);
+                let val = start + (i / segments);
+                let leftPercent = (i / totalTicks) * 100;
+                
+                let point = points.find(p => Math.abs(p.val - val) < 0.001);
+                
+                html += `<div class="tick ${isMajor ? 'major' : 'minor'}" style="left: ${leftPercent}%">`;
+                if (isMajor) html += `<div class="tick-label">${start + i/segments}</div>`;
+                if (point) html += `<div class="point-dot"></div><div class="point-marker">${point.label}</div>`;
+                html += `</div>`;
+            }
+            html += '</div></div>';
+            return html;
+        }
 
-            // SEKCJA 2: Dodawanie mixed z CD
-            { id: "e", eq: "$\\frac{1}{2} + \\frac{1}{3}$", can: {int: 0, num: 5, den: 6}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik dla 2 i 3 to 6." },
-            { id: "f", eq: "$\\frac{1}{2} + \\frac{1}{5}$", can: {int: 0, num: 7, den: 10}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik to 10." },
-            { id: "g", eq: "$\\frac{1}{3} + \\frac{1}{4}$", can: {int: 0, num: 7, den: 12}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik to 12." },
-            { id: "h", eq: "$\\frac{1}{3} + \\frac{1}{5}$", can: {int: 0, num: 8, den: 15}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik to 15." },
-
-            // SEKCJA 3: Odejmowanie mixed z CD i borrowing
-            { id: "i", eq: "$3\\frac{1}{2} - \\frac{2}{3}$", can: {int: 2, num: 5, den: 6}, hintTitle: "Rozwiązywanie", hint: "1. Sprowadź do wspólnego mianownika (6): $3\\frac{3}{6} - \\frac{4}{6}$.\n2. Ponieważ $\\frac{3}{6} < \\frac{4}{6}$, musisz pożyczyć całość: $2\\frac{9}{6} - \\frac{4}{6}$" },
-            { id: "j", eq: "$3\\frac{1}{2} - 1\\frac{2}{3}$", can: {int: 1, num: 5, den: 6}, hintTitle: "Wskazówka", hint: "Wykorzystaj wynik z poprzedniego przykładu (zad i)." },
-            { id: "k", eq: "$3\\frac{1}{4} - \\frac{2}{3}$", can: {int: 2, num: 7, den: 12}, hintTitle: "Wskazówka", hint: "Wspólny mianownik to 12. Zamień $3\\frac{3}{12}$ na $2\\frac{15}{12}$." },
-            { id: "l", eq: "$3\\frac{1}{4} - 1\\frac{2}{3}$", can: {int: 1, num: 7, den: 12}, hintTitle: "Wskazówka", hint: "Użyj wyniku z zadania k." },
-
-            // SEKCJA 4: Różne działania na ułamkach mixed z CD i borrowing/improper
-            { id: "m", eq: "$1\\frac{1}{4} + 1\\frac{1}{6}$", can: {int: 2, num: 5, den: 12}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik dla 4 i 6 to 12." },
-            { id: "n", eq: "$1\\frac{3}{4} + 1\\frac{5}{6}$", can: {int: 3, num: 7, den: 12}, hintTitle: "Rozwiązywanie", hint: "1. Sprowadź do mianownika 12: $1\\frac{9}{12} + 1\\frac{10}{12} = 2\\frac{19}{12}$.\n2. Wyłącz całości: $3\\frac{7}{12}$" },
-            { id: "o", eq: "$2\\frac{1}{4} - 1\\frac{1}{6}$", can: {int: 1, num: 1, den: 12}, hintTitle: "Wskazówka", hint: "Wspólny mianownik to 12. Odejmij całości i ułamki." },
-            { id: "p", eq: "$2\\frac{1}{4} - 1\\frac{5}{6}$", can: {int: 0, num: 5, den: 12}, hintTitle: "Wskazówka", hint: "Wspólny mianownik to 12. Sprowadź ułamki i pożycz całość: $1\\frac{15}{12} - 1\\frac{10}{12}$" },
-        ];
-
-        // ФУНКЦИЯ КРАСИВОЙ ОТРИСОВКИ ДРОБЕЙ В УРАВНЕНИЯХ (HTML/CSS)
+        // БЕЗОПАСНЫЙ РЕНДЕР ДРОБЕЙ (ОШИБКА ИСПРАВЛЕНА!)
         function renderFractionEquationHTML(latex) {
+            if (!latex) return '';
+            let result = latex;
+            // 1. Сначала меняем знаки на красивые блоки
+            result = result.replace(/\s*\+\s*/g, ' <div class="operator">+</div> ');
+            result = result.replace(/\s*-\s*/g, ' <div class="operator">-</div> ');
+            result = result.replace(/\s*=\s*/g, ' <div class="operator">=</div> ');
+            result = result.replace(/\$/g, '');
+
+            // 2. Только ПОТОМ превращаем \frac в HTML-теги
             const pattern = /((\d+)\s*)?\\frac\{(\d+)\}\{(\d+)\}/g;
-            let result = latex.replace(pattern, (match, p1, p2, p3, p4) => {
-                let intPart = p2 || '';
+            result = result.replace(pattern, (match, p1, p2, p3, p4) => {
+                let intPart = p2 ? p2.trim() : '';
                 let mixedClass = intPart ? 'mixed' : '';
                 return `<div class="frac-component ${mixedClass}">
                             ${intPart ? `<div class="int-part">${intPart}</div>` : ''}
@@ -257,27 +195,62 @@
                             </div>
                         </div>`;
             });
-            result = result.replace(/\s*[+]\s*/g, ' <div class="operator">+</div> ');
-            result = result.replace(/\s*[-]\s*/g, ' <div class="operator">-</div> ');
-            result = result.replace(/\$/g, '');
             return `<div class="fraction-equation-container">${result}</div>`;
         }
 
+        // БАЗА ЗАДАНИЙ
+        const tasksData = [
+            // OŚ LICZBOWA
+            { id: "1", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>a</b>:", 
+              customHTML: generateNumberLineHTML(0, 2, 7, [{val: 3/7, label: 'a'}]),
+              can: {int: 0, num: 3, den: 7}, hint: "Odcinek między 0 a 1 jest podzielony na 7 małych kawałków." },
+            { id: "2", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>d</b>:", 
+              customHTML: generateNumberLineHTML(4, 6, 7, [{val: 36/7, label: 'd'}]),
+              can: {int: 5, num: 1, den: 7}, hint: "Punkt d leży za piątką, odlicz ile małych kresek minęło." },
+            { id: "3", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>h</b>:", 
+              customHTML: generateNumberLineHTML(53, 55, 5, [{val: 54.4, label: 'h'}]),
+              can: {int: 54, num: 2, den: 5}, hint: "Odcinek między 53 a 54 podzielono na 5 części." },
+            { id: "4", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>n</b>:", 
+              customHTML: generateNumberLineHTML(18, 20, 4, [{val: 19.5, label: 'n'}]),
+              can: {int: 19, num: 1, den: 2}, hint: "Punkt n leży równo pośrodku między 19 a 20 (czyli 19 i 2/4 = 19 i 1/2)." },
+
+            // SKRACANIE UŁAMKÓW
+            { id: "5", type: "frac", text: "Zamień na ułamek nieskracalny (skróć):", eq: "$\\frac{15}{35}$",
+              can: {int: 0, num: 3, den: 7}, hint: "Podziel licznik i mianownik przez 5." },
+            { id: "6", type: "frac", text: "Zamień na ułamek nieskracalny (skróć):", eq: "$\\frac{24}{36}$",
+              can: {int: 0, num: 2, den: 3}, hint: "Największy wspólny dzielnik dla 24 i 36 to 12." },
+            { id: "7", type: "frac", text: "Zamień na ułamek nieskracalny (skróć):", eq: "$\\frac{45}{100}$",
+              can: {int: 0, num: 9, den: 20}, hint: "Obie liczby dzielą się przez 5." },
+            { id: "8", type: "frac", text: "Zamień na ułamek nieskracalny (skróć):", eq: "$\\frac{48}{84}$",
+              can: {int: 0, num: 4, den: 7}, hint: "Obie liczby można podzielić przez 12." },
+
+            // WYŁĄCZANIE CAŁOŚCI
+            { id: "9", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{13}{2}$",
+              can: {int: 6, num: 1, den: 2}, hint: "Ile razy liczba 2 mieści się w 13? (Dzielenie z resztą)" },
+            { id: "10", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{34}{3}$",
+              can: {int: 11, num: 1, den: 3}, hint: "Sprawdź, ile razy 3 mieści się w 34." },
+            { id: "11", type: "frac", text: "Wyłącz całości z ułamka (zwróć uwagę na skracanie!):", eq: "$\\frac{28}{4}$",
+              can: {int: 7, num: 0, den: 0}, hint: "Liczba 28 dzieli się przez 4 bez reszty!" },
+            { id: "12", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{47}{4}$",
+              can: {int: 11, num: 3, den: 4}, hint: "Ile pełnych czwórek mieści się w 47?" }
+        ];
+
         const container = document.getElementById("tasks-container");
 
-        tasksData.forEach((task) => {
+        tasksData.forEach((task, index) => {
             resultsData[task.id] = "Nie rozwiązano"; 
             userAttemptsStructures[task.id] = [];
-            const equationHTML = renderFractionEquationHTML(task.eq);
-            const hintEquationHTML = task.hint ? renderFractionEquationHTML(task.hint) : '';
+            
+            let mathHTML = "";
+            if (task.customHTML) mathHTML += task.customHTML;
+            if (task.eq) mathHTML += renderFractionEquationHTML(task.eq);
 
             container.innerHTML += `
                 <div class="task-card" id="card_${task.id}">
                     <div class="task-text">
-                        <strong>${task.id.toUpperCase()}.</strong>
-                        <span>Rozwiąż działanie:</span>
-                        ${equationHTML}
+                        <strong>${index + 1}.</strong> ${task.text}
                     </div>
+                    ${mathHTML}
                     
                     <div class="input-group">
                         <div class="mixed-fraction-input-container" id="input_container_${task.id}">
@@ -294,26 +267,22 @@
                         <button class="btn-answer" id="btn_answer_${task.id}" style="display: none;" onclick="showAnswerFraction('${task.id}')">Odpowiedź</button>
                         <span id="feedback_${task.id}" class="feedback"></span>
                     </div>
-                    <div id="hint_${task.id}" class="hint-text">💡 <strong>${task.hintTitle}:</strong> ${hintEquationHTML || task.hint}</div>
+                    <div id="hint_${task.id}" class="hint-text">💡 ${task.hint}</div>
                 </div>
             `;
         });
 
-        // Утилита для нормализации ввода (String -> Number, пустой -> 0)
         const valFromField = (id) => {
             const v = document.getElementById(id).value.trim();
             return v ? Number(v) : 0;
         }
 
-        // Логика проверки для composite fraction input
         function checkAnswerFraction(taskId) {
             const canonical = tasksData.find(t => t.id === taskId).can;
             const feedbackEl = document.getElementById(`feedback_${taskId}`);
             const cardEl = document.getElementById(`card_${taskId}`);
             const btnAnswer = document.getElementById(`btn_answer_${taskId}`);
-            const inputContainer = document.getElementById(`input_container_${taskId}`);
             
-            // Считываем 3 поля ввода и нормализуем
             const student = {
                 int: valFromField(`input_${taskId}_int`),
                 num: valFromField(`input_${taskId}_num`),
@@ -322,13 +291,10 @@
 
             cardEl.classList.remove("correct-bg", "incorrect-bg");
 
-            // Проверка на пустой ввод
             if (student.int === 0 && student.num === 0 && student.den === 0) {
                 return (feedbackEl.textContent = "Wpisz odpowiedź!", feedbackEl.className = "feedback incorrect");
             }
 
-            // Верификация канонической структуры: Требуется полностью упрощенная форма
-            // Integer must match, Num must match, Den must match (unless pure integer)
             let isCorrect = (student.int === canonical.int && student.num === canonical.num);
             if (isCorrect && canonical.num !== 0) {
                 isCorrect = (student.den === canonical.den);
@@ -340,97 +306,82 @@
                 cardEl.classList.add("correct-bg");
                 btnAnswer.style.display = "none";
                 
-                // Деактивируем инпуты при правильном ответе
                 document.getElementById(`input_${taskId}_int`).disabled = true;
                 document.getElementById(`input_${taskId}_num`).disabled = true;
                 document.getElementById(`input_${taskId}_den`).disabled = true;
                 
-                if(resultsData[taskId] !== "Podglądał odpowiedź") {
-                    resultsData[taskId] = "Samodzielnie";
-                }
+                if(resultsData[taskId] !== "Podglądał odpowiedź") resultsData[taskId] = "Samodzielnie";
             } else {
-                // Проверка на повторную ошибку
                 const attemptsString = JSON.stringify(student);
                 if (userAttemptsStructures[taskId].includes(attemptsString)) {
                     feedbackEl.textContent = "Już podałeś taką odpowiedź. Spróbuj inną!";
                 } else {
                     userAttemptsStructures[taskId].push(attemptsString); 
-                    feedbackEl.textContent = "Błąd, spróbuj jeszcze raz.";
+                    feedbackEl.textContent = "Błąd, spróbuj jeszcze raz. (Upewnij się, że ułamek jest nieskracalny!)";
                 }
                 feedbackEl.className = "feedback incorrect"; 
                 cardEl.classList.add("incorrect-bg");
                 
-                if (userAttemptsStructures[taskId].length >= 2) {
-                    btnAnswer.style.display = "inline-block";
-                }
+                if (userAttemptsStructures[taskId].length >= 2) btnAnswer.style.display = "inline-block";
             }
         }
 
-        // Показ правильного ответа в composite inputs
         function showAnswerFraction(taskId) {
             const canonical = tasksData.find(t => t.id === taskId).can;
             document.getElementById(`card_${taskId}`).classList.remove("incorrect-bg");
             document.getElementById(`card_${taskId}`).classList.add("correct-bg");
             
-            // Вписываем канонический ответ
             const intField = document.getElementById(`input_${taskId}_int`);
             const numField = document.getElementById(`input_${taskId}_num`);
             const denField = document.getElementById(`input_${taskId}_den`);
             
-            intField.value = canonical.int || ''; // empty string if 0
-            numField.value = canonical.num || ''; // empty string if 0
-            denField.value = canonical.num !== 0 ? canonical.den : ''; // only show den if num exists
+            intField.value = canonical.int || ''; 
+            numField.value = canonical.num || ''; 
+            denField.value = canonical.num !== 0 ? canonical.den : ''; 
 
-            // Деактивируем
-            intField.disabled = true;
-            numField.disabled = true;
-            denField.disabled = true;
+            intField.disabled = true; numField.disabled = true; denField.disabled = true;
 
             const feedbackEl = document.getElementById(`feedback_${taskId}`);
-            feedbackEl.innerHTML = "Oto prawidłowa odpowiedź (w najprostszej postaci)!";
+            feedbackEl.innerHTML = "Oto prawidłowa odpowiedź!";
             feedbackEl.className = "feedback correct";
             document.getElementById(`btn_answer_${taskId}`).style.display = "none";
             
             resultsData[taskId] = "Podglądał odpowiedź";
         }
 
-        // Подготовка данных для отправки e-mail (считывание composite inputs)
         function sendResults() {
             let correctCount = 0; let hintCount = 0; let notSolvedCount = 0;
             let detailedReport = "";
             let totalTasks = tasksData.length;
 
-            tasksData.forEach((task) => {
-                const taskIdUpper = task.id.toUpperCase();
+            tasksData.forEach((task, index) => {
                 const wrongAttemptsString = (userAttemptsStructures[task.id] && userAttemptsStructures[task.id].length > 0) ? `(${userAttemptsStructures[task.id].length})` : "";
                 
-                // Получаем текущие значения ввоda для успешных записей
                 const currentInputInt = document.getElementById(`input_${task.id}_int`).value.trim();
                 const currentInputNum = document.getElementById(`input_${task.id}_num`).value.trim();
                 const currentInputDen = document.getElementById(`input_${task.id}_den`).value.trim();
 
+                let answerDetails = currentInputInt && currentInputInt !== '0' ? currentInputInt : '';
+                if (currentInputNum && currentInputNum !== '0') {
+                    answerDetails += ` ${currentInputNum}/${currentInputDen}`;
+                }
+                answerDetails = answerDetails.trim();
+
                 if(resultsData[task.id] === "Samodzielnie") {
                     correctCount++;
-                    // Красивая запись composite answer for email:
-                    let answerDetails = currentInputInt && currentInputInt !== '0' ? currentInputInt : '';
-                    if (currentInputNum && currentInputNum !== '0') {
-                        answerDetails += ` ${currentInputNum}/${currentInputDen}`;
-                    }
-                    answerDetails = answerDetails.trim();
-
-                    detailedReport += `Zadanie ${taskIdUpper}: Samodzielnie (Błędy przed sukcesem: ${wrongAttemptsString} | Odpowiedź końcowa: ${answerDetails})\n`;
+                    detailedReport += `Zadanie ${index + 1}: Samodzielnie (Błędy: ${wrongAttemptsString} | Odpowiedź: ${answerDetails})\n`;
                 }
                 else if(resultsData[task.id] === "Podglądał odpowiedź") {
                     hintCount++;
-                    detailedReport += `Zadanie ${task.id.toUpperCase()}: Podglądał odpowiedź (Błędne próby ucznia: ${wrongAttemptsString || "(0)"})\n`;
+                    detailedReport += `Zadanie ${index + 1}: Podglądał odpowiedź (Błędne próby: ${wrongAttemptsString || "(0)"})\n`;
                 }
                 else {
                     notSolvedCount++;
-                    detailedReport += `Zadanie ${task.id.toUpperCase()}: Nie rozwiązano\n`;
+                    detailedReport += `Zadanie ${index + 1}: Nie rozwiązano\n`;
                 }
             });
 
-            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\nTEST: UŁAMKI ZWYKŁE (Composite Inputs)\n\nWYNIK GŁÓWNY:\n- Poprawne odpowiedzi samodzielne: ${correctCount} z ${totalTasks}\n- Z użyciem gotowej odpowiedzi: ${hintCount} z ${totalTasks}\n- Brak odpowiedzi: ${notSolvedCount} z ${totalTasks}\n\nSZCZEGÓŁY:\n${detailedReport}`;
+            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\nTEST: OŚ I SKRACANIE UŁAMKÓW\n\nWYNIK GŁÓWNY:\n- Poprawne odpowiedzi samodzielne: ${correctCount} z ${totalTasks}\n- Z użyciem gotowej odpowiedzi: ${hintCount} z ${totalTasks}\n- Brak odpowiedzi: ${notSolvedCount} z ${totalTasks}\n\nSZCZEGÓŁY:\n${detailedReport}`;
 
             const btnSubmit = document.getElementById("btn-submit");
             btnSubmit.textContent = "Wysyłanie...";
@@ -441,8 +392,8 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
-                    access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa", // Uwaga: Należy zachować istniejący klucz
-                    subject: `Wyniki (Composite Ułamki Zwykłe): ${currentStudent} (${currentClass})`,
+                    access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa", // Твой ключ
+                    subject: `Wyniki (Oś i skracanie): ${currentStudent} (${currentClass})`,
                     from_name: "Test Matematyczny",
                     message: finalMessage
                 })
