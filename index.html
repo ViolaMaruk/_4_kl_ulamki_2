@@ -44,14 +44,14 @@
         .task-card.incorrect-bg { background-color: #f8d7da; border-left-color: #dc3545; }
         .task-text { font-size: 1.2em; margin-bottom: 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;}
         
-        /* СТИЛИ ДЛЯ БЕЗОПАСНОЙ ОТРИСОВКИ ДРОБЕЙ В ТЕКСТЕ */
+        /* СТИЛИ ДЛЯ ВЕЛИКОЛЕПНОЙ ОТРИСОВКИ ДРОБЕЙ */
         .eqContainer { display: inline-flex; align-items: center; gap: 4px; font-family: 'Georgia', serif; font-size: 1.1em;}
-        .fracWrap { display: inline-flex; align-items: center;}
-        .fracWrap.mixed { gap: 3px; }
-        .intP { font-size: 1.2em; font-weight: bold;}
-        .fracB { display: flex; flex-direction: column; align-items: center; line-height: 1; }
-        .numP, .denP { font-size: 0.9em; padding: 1px;}
-        .lineP { width: 100%; height: 1.5px; background: #333; margin: 1px 0;}
+        .fracComp { display: inline-flex; align-items: center;}
+        .fracComp.mixed { gap: 3px; }
+        .intPart { font-size: 1.2em; font-weight: bold;}
+        .fracBox { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+        .numPart, .denPart { font-size: 0.9em; padding: 1px;}
+        .fracLine { width: 100%; height: 1.5px; background: #333; margin: 1px 0;}
         .opBox { font-size: 1.2em; font-weight: bold; margin: 0 4px; color: #555;}
         
         /* СТИЛИ ДЛЯ ИНТЕЛЛЕКТУАЛЬНЫХ ОКОН ВВОДА ОТВЕТА */
@@ -196,36 +196,27 @@
             { id: "p", eq: "$2\\frac{1}{4} - 1\\frac{5}{6}$", can: {int: 0, num: 5, den: 12}, hintTitle: "Wskazówka", hint: "Wspólny mianownik to 12. Sprowadź ułamki i pożycz całość: $1\\frac{15}{12} - 1\\frac{10}{12}$" },
         ];
 
-        // 100% ПУЛЕНЕПРОБИВАЕМЫЙ РЕНДЕР ДРОБЕЙ
+        // ИДЕАЛЬНЫЙ ПАРСЕР (Никогда не сломает HTML)
         function renderFractionEquationHTML(latex) {
             if (!latex) return '';
             let text = latex.replace(/\$/g, '');
             
-            // 1. Извлекаем дроби и прячем их в безопасные "сейфы" (токены)
-            let fractions = [];
-            const fracRegex = /((\d+)\s*)?\\frac\{(\d+)\}\{(\d+)\}/g;
-            text = text.replace(fracRegex, (match, p1, p2, p3, p4) => {
+            // 1. Сразу заменяем все операторы (+, -, =) ОДНИМ махом, пока нет никакого HTML
+            text = text.replace(/([+\-=])/g, '<div class="opBox">$1</div>');
+
+            // 2. Только после этого строим дроби из цифр
+            const pattern = /((\d+)\s*)?\\frac\{(\d+)\}\{(\d+)\}/g;
+            text = text.replace(pattern, (match, p1, p2, p3, p4) => {
                 let intPart = p2 ? p2.trim() : '';
                 let mixedClass = intPart ? 'mixed' : '';
-                let html = `<div class="fracWrap ${mixedClass}">` +
-                           (intPart ? `<div class="intP">${intPart}</div>` : '') +
-                           `<div class="fracB">` +
-                           `<div class="numP">${p3}</div>` +
-                           `<div class="lineP"></div>` +
-                           `<div class="denP">${p4}</div>` +
-                           `</div></div>`;
-                fractions.push(html);
-                return `__SAFE_TOKEN_${fractions.length - 1}__`;
-            });
-
-            // 2. Теперь безопасно заменяем математические знаки
-            text = text.replace(/\+/g, ' <div class="opBox">+</div> ');
-            text = text.replace(/-/g, ' <div class="opBox">-</div> ');
-            text = text.replace(/=/g, ' <div class="opBox">=</div> ');
-
-            // 3. Достаем дроби из "сейфов" и возвращаем на место
-            fractions.forEach((html, i) => {
-                text = text.replace(`__SAFE_TOKEN_${i}__`, html);
+                return `<div class="fracComp ${mixedClass}">
+                            ${intPart ? `<div class="intPart">${intPart}</div>` : ''}
+                            <div class="fracBox">
+                                <div class="numPart">${p3}</div>
+                                <div class="fracLine"></div>
+                                <div class="denPart">${p4}</div>
+                            </div>
+                        </div>`;
             });
 
             return `<div class="eqContainer">${text}</div>`;
@@ -238,7 +229,6 @@
             userAttemptsStructures[task.id] = [];
             
             const equationHTML = renderFractionEquationHTML(task.eq);
-            // Обрабатываем подсказку, если в ней есть формулы с LaTeX (окруженные $)
             let hintHTML = task.hint.replace(/\$([^\$]+)\$/g, (match, p1) => renderFractionEquationHTML(p1));
 
             container.innerHTML += `
