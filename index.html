@@ -54,7 +54,7 @@
         .fracLine { width: 100%; height: 1.5px; background: #333; margin: 1px 0;}
         .opBox { font-size: 1.2em; font-weight: bold; margin: 0 4px; color: #555;}
         
-        /* СТИЛИ ДЛЯ ЧИСЛОВОЙ ОСИ (Рисуется автоматически!) */
+        /* СТИЛИ ДЛЯ ЧИСЛОВОЙ ОСИ */
         .numberLineContainer { position: relative; height: 60px; margin: 30px 20px 30px 20px; }
         .numberLineTrack { position: absolute; top: 30px; left: 0; right: 0; height: 2px; background: #333; }
         .numberLineTrack::after { content: ''; position: absolute; right: -10px; top: -4px; border-width: 5px 0 5px 10px; border-style: solid; border-color: transparent transparent transparent #333; }
@@ -66,12 +66,12 @@
         .pointDot { position: absolute; top: 5px; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #e67e22; border-radius: 50%; z-index: 2; }
         .pointMarker { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); color: #e67e22; font-weight: bold; font-style: italic; font-size: 1.2em; }
 
-        /* --- ОБНОВЛЕННЫЕ, ШИРОКИЕ ОКНА ВВОДА --- */
+        /* --- СИЛЬНО РАСШИРЕННЫЕ ОКНА ВВОДА --- */
         .input-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-top: 15px;}
         
         .inputContainerFrac {
-            display: inline-flex; align-items: center; gap: 8px; font-family: 'Georgia', serif;
-            font-size: 1.2em; padding: 8px; border-radius: 8px; background: #f8f9fa; border: 2px solid #cbd5e1;
+            display: inline-flex; align-items: center; gap: 10px; font-family: 'Georgia', serif;
+            font-size: 1.2em; padding: 10px; border-radius: 8px; background: #f8f9fa; border: 2px solid #cbd5e1;
         }
         .inputContainerFrac input {
             border: none; border-bottom: 2px solid #94a3b8; text-align: center; border-radius: 0;
@@ -79,19 +79,18 @@
         }
         .inputContainerFrac input:focus { border-color: #3498db; }
         
-        /* Увеличенная ширина для целой части */
-        .inputInt { width: 55px; font-size: 1.2em; font-weight: bold; }
-        
-        /* Увеличенная ширина для числителя и знаменателя */
-        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 55px; line-height: 1.2; }
+        /* Еще больше ширины, чтобы слова Cał, Lic, Mia точно влезли */
+        .inputInt { width: 75px; font-size: 1.2em; font-weight: bold; }
+        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 75px; line-height: 1.2; }
         .inputNum, .inputDen { width: 100%; font-size: 1.1em; padding: 2px; }
         .inputDen { border-bottom: none; }
         .inputLine { width: 100%; height: 2px; background: #333; margin: 3px 0; }
 
-        /* ВЫПАДАЮЩИЙ СПИСОК ДЛЯ СРАВНЕНИЯ ДРОБЕЙ */
+        /* ВЫПАДАЮЩИЙ СПИСОК (зафиксировал ширину, чтобы текст не обрезался) */
         select.compareSelect {
             font-size: 1.2em; padding: 8px 12px; font-weight: bold; color: #2c3e50;
             border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; outline: none; background: #f8f9fa;
+            min-width: 170px; text-align: center;
         }
         select.compareSelect:focus { border-color: #3498db; }
 
