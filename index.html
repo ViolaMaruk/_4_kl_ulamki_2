@@ -44,7 +44,7 @@
         .task-card.incorrect-bg { background-color: #f8d7da; border-left-color: #dc3545; }
         .task-text { font-size: 1.2em; margin-bottom: 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;}
         
-        /* СТИЛИ ДЛЯ ИДЕАЛЬНОЙ ОТРИСОВКИ ДРОБЕЙ */
+        /* СТИЛИ ДЛЯ ИДЕАЛЬНОЙ ОТРИСОВКИ ДРОБЕЙ В ТЕКСТЕ ЗАДАНИЯ */
         .eqContainer { display: inline-flex; align-items: center; gap: 4px; font-family: 'Georgia', serif; font-size: 1.1em;}
         .fracComp { display: inline-flex; align-items: center;}
         .fracComp.mixed { gap: 3px; }
@@ -66,48 +66,82 @@
         .pointDot { position: absolute; top: 5px; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #e67e22; border-radius: 50%; z-index: 2; }
         .pointMarker { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); color: #e67e22; font-weight: bold; font-style: italic; font-size: 1.2em; }
 
-        /* --- СИЛЬНО РАСШИРЕННЫЕ ОКНА ВВОДА --- */
+        /* --- НОВЫЙ ДИЗАЙН ОКОН ВВОДА (КАК В ПРИЛОЖЕНИИ) --- */
         .input-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-top: 15px;}
         
         .inputContainerFrac {
-            display: inline-flex; align-items: center; gap: 10px; font-family: 'Georgia', serif;
-            font-size: 1.2em; padding: 10px; border-radius: 8px; background: #f8f9fa; border: 2px solid #cbd5e1;
+            display: inline-flex; align-items: center; gap: 12px; font-family: 'Segoe UI', Tahoma, sans-serif;
         }
-        .inputContainerFrac input {
-            border: none; border-bottom: 2px solid #94a3b8; text-align: center; border-radius: 0;
-            padding: 4px; outline: none; transition: border-color 0.2s; background: transparent;
-        }
-        .inputContainerFrac input:focus { border-color: #3498db; }
         
-        /* Еще больше ширины, чтобы слова Cał, Lic, Mia точно влезли */
-        .inputInt { width: 75px; font-size: 1.2em; font-weight: bold; }
-        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 75px; line-height: 1.2; }
-        .inputNum, .inputDen { width: 100%; font-size: 1.1em; padding: 2px; }
-        .inputDen { border-bottom: none; }
-        .inputLine { width: 100%; height: 2px; background: #333; margin: 3px 0; }
+        /* Общие стили для всех квадратиков ввода */
+        .inputContainerFrac input {
+            background: #fff;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            outline: none;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        /* Эффект при клике на квадратик */
+        .inputContainerFrac input:focus { 
+            border-color: #3498db; 
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* Квадратик для целой части */
+        .inputInt { 
+            width: 50px; 
+            height: 50px; 
+        }
+        
+        /* Контейнер для числителя и знаменателя */
+        .inputFracBox { 
+            display: flex; flex-direction: column; align-items: center; width: 55px; 
+        }
+        
+        /* Квадратики числителя и знаменателя */
+        .inputNum, .inputDen { 
+            width: 100%; 
+            height: 45px; 
+        }
+        
+        /* Толстая линия дроби (чуть шире самих окошек) */
+        .inputLine { 
+            width: 120%; 
+            height: 3px; 
+            background: #333; 
+            margin: 6px 0; 
+            border-radius: 2px;
+        }
 
-        /* ВЫПАДАЮЩИЙ СПИСОК (зафиксировал ширину, чтобы текст не обрезался) */
+        /* ВЫПАДАЮЩИЙ СПИСОК (для сравнения дробей) */
         select.compareSelect {
             font-size: 1.2em; padding: 8px 12px; font-weight: bold; color: #2c3e50;
-            border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; outline: none; background: #f8f9fa;
-            min-width: 170px; text-align: center;
+            border: 2px solid #cbd5e1; border-radius: 8px; cursor: pointer; outline: none; background: #fff;
+            min-width: 170px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        select.compareSelect:focus { border-color: #3498db; }
+        select.compareSelect:focus { border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); }
 
         button {
             background-color: #3498db; color: white; border: none; padding: 12px 24px;
-            font-size: 1.05em; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: bold;
+            font-size: 1.05em; border-radius: 8px; cursor: pointer; transition: 0.2s; font-weight: bold;
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
         }
-        button:hover { background-color: #2980b9; }
-        button.btn-hint { background-color: #f39c12; }
+        button:hover { background-color: #2980b9; transform: translateY(-1px); }
+        button.btn-hint { background-color: #f39c12; box-shadow: 0 4px 6px rgba(243, 156, 18, 0.2);}
         button.btn-hint:hover { background-color: #d68910; }
-        button.btn-answer { background-color: #9b59b6; }
+        button.btn-answer { background-color: #9b59b6; box-shadow: 0 4px 6px rgba(155, 89, 182, 0.2);}
         button.btn-answer:hover { background-color: #8e44ad; }
         
         .feedback { font-weight: bold; margin-left: 10px; font-size: 1.1em;}
         .correct { color: #1e8449; }
         .incorrect { color: #c0392b; }
-        .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; font-style: normal; color: #856404; border-radius: 0 6px 6px 0; font-size: 1.05em;}
+        .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; font-style: normal; color: #856404; border-radius: 8px; font-size: 1.05em;}
 
         #start-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: white; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
@@ -141,8 +175,8 @@
             <div class="instructions">
                 <b>📌 Ważne wskazówki przed startem:</b><br>
                 1. <b>Skracanie i całości:</b> Wpisuj odpowiedzi w najprostszej postaci (np. skróć ułamek i wyłącz całość).<br>
-                2. <b>Separator pól:</b> Lewe pole to całości, prawe górne to licznik, prawe dolne to mianownik.<br>
-                3. Jeśli odpowiedź to sama liczba całkowita, wypełnij tylko pole całości.
+                2. <b>Wypełnianie:</b> Pierwsze pole po lewej to całości. Górne pole to licznik, dolne to mianownik.<br>
+                3. Jeśli odpowiedź to sama liczba całkowita, wypełnij tylko pole całości. Jeśli sam ułamek - tylko licznik i mianownik.
             </div>
         </div>
 
@@ -279,11 +313,11 @@
                     ${visualHTML}
                     <div class="input-group">
                         <div class="inputContainerFrac" id="input_container_${task.id}">
-                            <input type="text" class="inputInt" id="input_${task.id}_int" placeholder="Cał">
+                            <input type="text" class="inputInt" id="input_${task.id}_int" placeholder="">
                             <div class="inputFracBox">
-                                <input type="text" class="inputNum" id="input_${task.id}_num" placeholder="Lic">
+                                <input type="text" class="inputNum" id="input_${task.id}_num" placeholder="?">
                                 <div class="inputLine"></div>
-                                <input type="text" class="inputDen" id="input_${task.id}_den" placeholder="Mia">
+                                <input type="text" class="inputDen" id="input_${task.id}_den" placeholder="?">
                             </div>
                         </div>
 
