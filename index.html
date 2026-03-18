@@ -44,45 +44,35 @@
         .task-card.incorrect-bg { background-color: #f8d7da; border-left-color: #dc3545; }
         .task-text { font-size: 1.2em; margin-bottom: 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;}
         
-        /* СТИЛИ ДЛЯ ВЕЛИКОЛЕПНОЙ ОТРИСОВКИ ДРОБЕЙ (ВИЗУАЛЬНАЯ ЧАСТЬ) */
-        .fraction-equation-container { display: flex; align-items: center; gap: 4px; font-family: 'Georgia', serif; font-size: 1.1em;}
-        .fraction-equation-container .frac-component { display: inline-flex; align-items: center;}
-        .fraction-equation-container .frac-component.mixed { gap: 3px; }
-        .fraction-equation-container .frac-component .int-part { font-size: 1.2em; font-weight: bold;}
-        .fraction-equation-container .frac-component .frac-box-visual { display: flex; flex-direction: column; align-items: center; line-height: 1; }
-        .fraction-equation-container .frac-component .frac-box-visual .num-part,
-        .fraction-equation-container .frac-component .frac-box-visual .den-part { font-size: 0.9em; padding: 1px;}
-        .fraction-equation-container .frac-component .frac-box-visual .frac-line-visual { width: 100%; height: 1.5px; background: #333; margin: 1px 0;}
-        .fraction-equation-container .operator { font-size: 1.2em; font-weight: bold; margin: 0 4px; color: #555;}
+        /* СТИЛИ ДЛЯ БЕЗОПАСНОЙ ОТРИСОВКИ ДРОБЕЙ В ТЕКСТЕ */
+        .eqContainer { display: inline-flex; align-items: center; gap: 4px; font-family: 'Georgia', serif; font-size: 1.1em;}
+        .fracWrap { display: inline-flex; align-items: center;}
+        .fracWrap.mixed { gap: 3px; }
+        .intP { font-size: 1.2em; font-weight: bold;}
+        .fracB { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+        .numP, .denP { font-size: 0.9em; padding: 1px;}
+        .lineP { width: 100%; height: 1.5px; background: #333; margin: 1px 0;}
+        .opBox { font-size: 1.2em; font-weight: bold; margin: 0 4px; color: #555;}
         
-        /* СТИЛИ ДЛЯ ИНТЕЛЛЕКТУАЛЬНЫХ КОМПОНЕНТОВ ВВОДА ДРОБЕЙ (ПОЛЕ ВВОДА) */
+        /* СТИЛИ ДЛЯ ИНТЕЛЛЕКТУАЛЬНЫХ ОКОН ВВОДА ОТВЕТА */
         .input-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px;}
         
-        .mixed-fraction-input-container {
+        .inputContainerFrac {
             display: inline-flex; align-items: center; gap: 5px; font-family: 'Georgia', serif;
-            font-size: 1.1em; padding: 4px; border-radius: 6px;
+            font-size: 1.1em; padding: 4px; border-radius: 6px; background: #f8f9fa; border: 1px solid #e2e8f0;
         }
         
-        .mixed-fraction-input-container input {
-            border: none; border-bottom: 2px solid #e2e8f0; text-align: center; border-radius: 0;
+        .inputContainerFrac input {
+            border: none; border-bottom: 2px solid #ccc; text-align: center; border-radius: 0;
             padding: 2px; outline: none; transition: border-color 0.2s; background: transparent;
         }
-        .mixed-fraction-input-container input:focus { border-color: #3498db; }
+        .inputContainerFrac input:focus { border-color: #3498db; }
         
-        .mixed-fraction-input-container .frac-int-input { width: 35px; font-size: 1.1em; font-weight: bold; }
-        
-        .mixed-fraction-input-container .frac-box-input {
-            display: flex; flex-direction: column; align-items: center; width: 40px; line-height: 1;
-        }
-        
-        .mixed-fraction-input-container .frac-num-input,
-        .mixed-fraction-input-container .frac-den-input { width: 100%; font-size: 0.9em; padding: 1px; }
-        
-        .mixed-fraction-input-container .frac-den-input { border-bottom: none; }
-        
-        .mixed-fraction-input-container .frac-box-input .frac-line-input {
-            width: 100%; height: 1.5px; background: #333; margin: 1px 0;
-        }
+        .inputInt { width: 35px; font-size: 1.1em; font-weight: bold; }
+        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 40px; line-height: 1; }
+        .inputNum, .inputDen { width: 100%; font-size: 0.9em; padding: 1px; }
+        .inputDen { border-bottom: none; }
+        .inputLine { width: 100%; height: 2px; background: #333; margin: 2px 0; }
 
         button {
             background-color: #3498db; color: white; border: none; padding: 10px 20px;
@@ -140,13 +130,13 @@
 
     <div id="app-content">
         <div class="header-container">
-            <h1>Ułamki Zwykłe</h1>
-            <p class="description">Dodawanie i odejmowanie ułamków zwykłych i liczb mieszanych.</p>
+            <h1>Dodawanie i Odejmowanie Ułamków</h1>
+            <p class="description">Rozwiąż działania na ułamkach zwykłych i liczbach mieszanych.</p>
             <div class="instructions">
                 <b>📌 Ważne wskazówki przed startem:</b><br>
-                1. <b>Wpisuj odpowiedzi w najprostszej postaci</b> (np. skrócaj ułamki i wyłączaj całości).<br>
-                2. <b>Separator pól:</b> Pole po lewej to liczba całkowita, pole na górze po prawej to licznik, pole na dole po prawej to mianownik.<br>
-                3. Jeśli wynik to sama liczba całkowita, wypełnij tylko pole po lewej, resztę zostaw pustą. Jeśli to sam ułamek, wypełnij tylko licznik i mianownik.
+                1. <b>Wpisuj odpowiedzi w najprostszej postaci</b> (wyłączaj całości i skracaj ułamki).<br>
+                2. <b>Separator pól:</b> Lewe pole to liczba całkowita (Cał), górne to licznik (Lic), dolne to mianownik (Mia).<br>
+                3. Jeśli odpowiedź to sama liczba całkowita, wypełnij tylko lewe pole. Jeśli to sam ułamek, wypełnij tylko licznik i mianownik.
             </div>
         </div>
 
@@ -181,66 +171,64 @@
         }
 
         const tasksData = [
-            // SEKCJA 1: Odejmowanie mixed zintegers/mixed
+            // SEKCJA 1
             { id: "a", eq: "$2\\frac{2}{3} - \\frac{2}{3}$", can: {int: 2, num: 0, den: 0}, hintTitle: "Wskazówka", hint: "Po odjęciu ułamka zostanie sama liczba całkowita." },
             { id: "b", eq: "$2\\frac{1}{3} - 1\\frac{2}{3}$", can: {int: 0, num: 2, den: 3}, hintTitle: "Wskazówka", hint: "Musisz 'zamienić' jedność w odjemnej. Zrób: $1\\frac{4}{3} - 1\\frac{2}{3}$" },
             { id: "c", eq: "$2 - \\frac{2}{3}$", can: {int: 1, num: 1, den: 3}, hintTitle: "Wskazówka", hint: "Zamień 2 całości na $1\\frac{3}{3}$" },
             { id: "d", eq: "$4 - 1\\frac{2}{3}$", can: {int: 2, num: 1, den: 3}, hintTitle: "Wskazówka", hint: "Zamień 4 całości na $3\\frac{3}{3}$ i wykonaj odejmowanie." },
 
-            // SEKCJA 2: Dodawanie mixed z CD
+            // SEKCJA 2
             { id: "e", eq: "$\\frac{1}{2} + \\frac{1}{3}$", can: {int: 0, num: 5, den: 6}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik dla 2 i 3 to 6." },
             { id: "f", eq: "$\\frac{1}{2} + \\frac{1}{5}$", can: {int: 0, num: 7, den: 10}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik to 10." },
             { id: "g", eq: "$\\frac{1}{3} + \\frac{1}{4}$", can: {int: 0, num: 7, den: 12}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik to 12." },
             { id: "h", eq: "$\\frac{1}{3} + \\frac{1}{5}$", can: {int: 0, num: 8, den: 15}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik to 15." },
 
-            // SEKCJA 3: Odejmowanie mixed z CD i borrowing
+            // SEKCJA 3
             { id: "i", eq: "$3\\frac{1}{2} - \\frac{2}{3}$", can: {int: 2, num: 5, den: 6}, hintTitle: "Rozwiązywanie", hint: "1. Sprowadź do wspólnego mianownika (6): $3\\frac{3}{6} - \\frac{4}{6}$.<br>2. Ponieważ $\\frac{3}{6} < \\frac{4}{6}$, musisz pożyczyć całość: $2\\frac{9}{6} - \\frac{4}{6}$" },
             { id: "j", eq: "$3\\frac{1}{2} - 1\\frac{2}{3}$", can: {int: 1, num: 5, den: 6}, hintTitle: "Wskazówka", hint: "Wykorzystaj wynik z poprzedniego przykładu (zad i)." },
             { id: "k", eq: "$3\\frac{1}{4} - \\frac{2}{3}$", can: {int: 2, num: 7, den: 12}, hintTitle: "Wskazówka", hint: "Wspólny mianownik to 12. Zamień $3\\frac{3}{12}$ na $2\\frac{15}{12}$." },
             { id: "l", eq: "$3\\frac{1}{4} - 1\\frac{2}{3}$", can: {int: 1, num: 7, den: 12}, hintTitle: "Wskazówka", hint: "Użyj wyniku z zadania k." },
 
-            // SEKCJA 4: Różne działania na ułamkach
+            // SEKCJA 4
             { id: "m", eq: "$1\\frac{1}{4} + 1\\frac{1}{6}$", can: {int: 2, num: 5, den: 12}, hintTitle: "Wspólny mianownik", hint: "Wspólny mianownik dla 4 i 6 to 12." },
             { id: "n", eq: "$1\\frac{3}{4} + 1\\frac{5}{6}$", can: {int: 3, num: 7, den: 12}, hintTitle: "Rozwiązywanie", hint: "1. Sprowadź do mianownika 12: $1\\frac{9}{12} + 1\\frac{10}{12} = 2\\frac{19}{12}$.<br>2. Wyłącz całości: $3\\frac{7}{12}$" },
             { id: "o", eq: "$2\\frac{1}{4} - 1\\frac{1}{6}$", can: {int: 1, num: 1, den: 12}, hintTitle: "Wskazówka", hint: "Wspólny mianownik to 12. Odejmij całości i ułamki." },
             { id: "p", eq: "$2\\frac{1}{4} - 1\\frac{5}{6}$", can: {int: 0, num: 5, den: 12}, hintTitle: "Wskazówka", hint: "Wspólny mianownik to 12. Sprowadź ułamki i pożycz całość: $1\\frac{15}{12} - 1\\frac{10}{12}$" },
         ];
 
-        // 100% НАДЕЖНЫЙ ПАРСЕР ДРОБЕЙ
+        // 100% ПУЛЕНЕПРОБИВАЕМЫЙ РЕНДЕР ДРОБЕЙ
         function renderFractionEquationHTML(latex) {
             if (!latex) return '';
-            let result = latex.replace(/\$/g, '');
+            let text = latex.replace(/\$/g, '');
             
+            // 1. Извлекаем дроби и прячем их в безопасные "сейфы" (токены)
             let fractions = [];
-            const pattern = /((\d+)\s*)?\\frac\{(\d+)\}\{(\d+)\}/g;
-            
-            // 1. Заменяем все дроби на временные метки (чтобы защитить их HTML от изменений)
-            result = result.replace(pattern, (match, p1, p2, p3, p4) => {
+            const fracRegex = /((\d+)\s*)?\\frac\{(\d+)\}\{(\d+)\}/g;
+            text = text.replace(fracRegex, (match, p1, p2, p3, p4) => {
                 let intPart = p2 ? p2.trim() : '';
                 let mixedClass = intPart ? 'mixed' : '';
-                let html = `<div class="frac-component ${mixedClass}">
-                                ${intPart ? `<div class="int-part">${intPart}</div>` : ''}
-                                <div class="frac-box-visual">
-                                    <div class="num-part">${p3}</div>
-                                    <div class="frac-line-visual"></div>
-                                    <div class="den-part">${p4}</div>
-                                </div>
-                            </div>`;
+                let html = `<div class="fracWrap ${mixedClass}">` +
+                           (intPart ? `<div class="intP">${intPart}</div>` : '') +
+                           `<div class="fracB">` +
+                           `<div class="numP">${p3}</div>` +
+                           `<div class="lineP"></div>` +
+                           `<div class="denP">${p4}</div>` +
+                           `</div></div>`;
                 fractions.push(html);
-                return `__FRAC_${fractions.length - 1}__`;
+                return `__SAFE_TOKEN_${fractions.length - 1}__`;
             });
 
-            // 2. Теперь абсолютно безопасно заменяем плюсы и минусы на красивые блоки
-            result = result.replace(/\+/g, ' <div class="operator">+</div> ');
-            result = result.replace(/-/g, ' <div class="operator">-</div> ');
-            result = result.replace(/=/g, ' <div class="operator">=</div> ');
+            // 2. Теперь безопасно заменяем математические знаки
+            text = text.replace(/\+/g, ' <div class="opBox">+</div> ');
+            text = text.replace(/-/g, ' <div class="opBox">-</div> ');
+            text = text.replace(/=/g, ' <div class="opBox">=</div> ');
 
-            // 3. Возвращаем дроби обратно
+            // 3. Достаем дроби из "сейфов" и возвращаем на место
             fractions.forEach((html, i) => {
-                result = result.replace(`__FRAC_${i}__`, html);
+                text = text.replace(`__SAFE_TOKEN_${i}__`, html);
             });
 
-            return `<div class="fraction-equation-container">${result}</div>`;
+            return `<div class="eqContainer">${text}</div>`;
         }
 
         const container = document.getElementById("tasks-container");
@@ -262,12 +250,12 @@
                     </div>
                     
                     <div class="input-group">
-                        <div class="mixed-fraction-input-container" id="input_container_${task.id}">
-                            <input type="text" class="frac-int-input" id="input_${task.id}_int" placeholder="Cał">
-                            <div class="frac-box-input">
-                                <input type="text" class="frac-num-input" id="input_${task.id}_num" placeholder="Lic">
-                                <div class="frac-line-input"></div>
-                                <input type="text" class="frac-den-input" id="input_${task.id}_den" placeholder="Mia">
+                        <div class="inputContainerFrac" id="input_container_${task.id}">
+                            <input type="text" class="inputInt" id="input_${task.id}_int" placeholder="Cał">
+                            <div class="inputFracBox">
+                                <input type="text" class="inputNum" id="input_${task.id}_num" placeholder="Lic">
+                                <div class="inputLine"></div>
+                                <input type="text" class="inputDen" id="input_${task.id}_den" placeholder="Mia">
                             </div>
                         </div>
 
