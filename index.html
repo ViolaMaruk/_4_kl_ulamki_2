@@ -226,25 +226,19 @@
             { id: "c_l", type: "compare", text: "Porównaj podane liczby:", eq1: "$5\\frac{3}{8}$", eq2: "$6\\frac{4}{9}$", can: "<", hint: "Popatrz tylko na całości." },
 
             // ОПРЕДЕЛИТЬ ДЛИННЫЕ ОСИ (КАК В УЧЕБНИКЕ) (16 ZADAŃ)
-            { id: "l_a", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>a</b>:", customHTML: generateNumberLineHTML(0, 3, 4, [{val: 0.25, label: 'a'}]), can: {int: 0, num: 1, den: 4}, hint: "Odcinek od 0 do 1 jest podzielony na 4 części." },
-            { id: "l_b", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>b</b>:", customHTML: generateNumberLineHTML(0, 3, 4, [{val: 1.25, label: 'b'}]), can: {int: 1, num: 1, den: 4}, hint: "Jedna mała kreska za cyfrą 1." },
-            { id: "l_c", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>c</b>:", customHTML: generateNumberLineHTML(2, 5, 4, [{val: 3.75, label: 'c'}]), can: {int: 3, num: 3, den: 4}, hint: "Trzecia kreska za cyfrą 3." },
-            { id: "l_d", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>d</b>:", customHTML: generateNumberLineHTML(4, 7, 4, [{val: 5.25, label: 'd'}]), can: {int: 5, num: 1, den: 4}, hint: "Pierwsza kreska za 5." },
-            { id: "l_e", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>e</b>:", customHTML: generateNumberLineHTML(5, 8, 4, [{val: 6.5, label: 'e'}]), can: {int: 6, num: 1, den: 2}, hint: "Druga kreska za 6 to 2/4. Pamiętaj o SKRÓCENIU ułamka!" },
-            { id: "l_f", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>f</b>:", customHTML: generateNumberLineHTML(5, 8, 4, [{val: 6.75, label: 'f'}]), can: {int: 6, num: 3, den: 4}, hint: "Trzecia kreska za cyfrą 6." },
-            
-            { id: "l_g", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>g</b>:", customHTML: generateNumberLineHTML(53, 56, 5, [{val: 53 + 2/5, label: 'g'}]), can: {int: 53, num: 2, den: 5}, hint: "Odcinek dzieli się na 5 części. To 2 kreska za 53." },
-            { id: "l_h", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>h</b>:", customHTML: generateNumberLineHTML(53, 56, 5, [{val: 54 + 2/5, label: 'h'}]), can: {int: 54, num: 2, den: 5}, hint: "Druga kreska za 54." },
-            { id: "l_i", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>i</b>:", customHTML: generateNumberLineHTML(54, 57, 5, [{val: 55 + 3/5, label: 'i'}]), can: {int: 55, num: 3, den: 5}, hint: "Trzecia kreska za 55." },
-            { id: "l_j", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>j</b>:", customHTML: generateNumberLineHTML(54, 57, 5, [{val: 55 + 4/5, label: 'j'}]), can: {int: 55, num: 4, den: 5}, hint: "Czwarta kreska za 55." },
-            { id: "l_k", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>k</b>:", customHTML: generateNumberLineHTML(55, 58, 5, [{val: 56 + 3/5, label: 'k'}]), can: {int: 56, num: 3, den: 5}, hint: "Trzecia kreska za 56." },
-            
-            { id: "l_l", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>l</b>:", customHTML: generateNumberLineHTML(17, 20, 3, [{val: 17 + 1/3, label: 'l'}]), can: {int: 17, num: 1, den: 3}, hint: "Odcinek dzieli się na 3 części. To jest pierwsza kreska." },
-            { id: "l_m", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>m</b>:", customHTML: generateNumberLineHTML(17, 20, 3, [{val: 18 + 2/3, label: 'm'}]), can: {int: 18, num: 2, den: 3}, hint: "Druga kreska za 18." },
-            { id: "l_n", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>n</b>:", customHTML: generateNumberLineHTML(18, 21, 3, [{val: 19 + 2/3, label: 'n'}]), can: {int: 19, num: 2, den: 3}, hint: "Druga kreska za 19." },
-            { id: "l_o", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>o</b>:", customHTML: generateNumberLineHTML(19, 22, 3, [{val: 20 + 1/3, label: 'o'}]), can: {int: 20, num: 1, den: 3}, hint: "Pierwsza kreska za 20." },
-            { id: "l_p", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>p</b>:", customHTML: generateNumberLineHTML(20, 23, 3, [{val: 21 + 2/3, label: 'p'}]), can: {int: 21, num: 2, den: 3}, hint: "Druga kreska za 21." },
-
+            // OŚ LICZBOWA
+            { id: "l1", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>a</b>:",
+              customHTML: generateNumberLineHTML(0, 3, 2, [{val: 0.5, label: 'a'}]),
+              can: {int: 0, num: 1, den: 2}, hint: "Odcinek od 0 do 1 jest podzielony na 2 równe części." },
+            { id: "l2", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>c</b>:",
+              customHTML: generateNumberLineHTML(2, 5, 2, [{val: 3.5, label: 'c'}]),
+              can: {int: 3, num: 1, den: 2}, hint: "Punkt c znajduje się dokładnie pośrodku między 3 a 4." },
+            { id: "l3", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>j</b>:",
+              customHTML: generateNumberLineHTML(54, 57, 4, [{val: 55.75, label: 'j'}]),
+              can: {int: 55, num: 3, den: 4}, hint: "Odcinek od 55 do 56 dzieli się na 4 części. Punkt j leży na 3. małej kresce za 55." },
+            { id: "l4", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>n</b>:",
+              customHTML: generateNumberLineHTML(18, 21, 5, [{val: 19.6, label: 'n'}]),
+              can: {int: 19, num: 3, den: 5}, hint: "Każda jednostka podzielona jest na 5 części. Punkt n to 3 kreski za liczbą 19." },
             // ZAMIEŃ NA UŁAMKI NIESKRACALNE (12 ZADAŃ)
             { id: "s_1", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{15}{35}$", can: {int: 0, num: 3, den: 7}, hint: "Podziel przez 5." },
             { id: "s_2", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{24}{36}$", can: {int: 0, num: 2, den: 3}, hint: "Podziel przez 12." },
