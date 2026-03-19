@@ -66,32 +66,46 @@
         .pointDot { position: absolute; top: 5px; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #e67e22; border-radius: 50%; z-index: 2; }
         .pointMarker { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); color: #e67e22; font-weight: bold; font-style: italic; font-size: 1.2em; }
 
-        /* --- ШИРОКИЕ ОКНА ВВОДА --- */
+        /* --- ШИРОКИЕ ОКНА ВВОДА (ОБНОВЛЕННЫЙ ДИЗАЙН) --- */
         .input-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-top: 15px;}
         
         .inputContainerFrac {
-            display: inline-flex; align-items: center; gap: 10px; font-family: 'Georgia', serif;
-            font-size: 1.2em; padding: 10px; border-radius: 8px; background: #f8f9fa; border: 2px solid #cbd5e1;
+            display: inline-flex; align-items: center; gap: 12px; font-family: 'Segoe UI', Tahoma, sans-serif;
+            padding: 10px; /* Убраны фон и рамка, чтобы выглядело чисто */
         }
         .inputContainerFrac input {
-            border: none; border-bottom: 2px solid #94a3b8; text-align: center; border-radius: 0;
-            padding: 4px; outline: none; transition: border-color 0.2s; background: transparent;
+            border: 2px solid #cbd5e1; text-align: center; border-radius: 8px; /* Добавлены скругленные рамки */
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: #fff; color: #2c3e50;
+            box-sizing: border-box;
         }
-        .inputContainerFrac input:focus { border-color: #3498db; }
+        .inputContainerFrac input:focus { border-color: #3498db; box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); }
         
-        .inputInt { width: 75px; font-size: 1.2em; font-weight: bold; }
-        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 75px; line-height: 1.2; }
-        .inputNum, .inputDen { width: 100%; font-size: 1.1em; padding: 2px; }
-        .inputDen { border-bottom: none; }
-        .inputLine { width: 100%; height: 2px; background: #333; margin: 3px 0; }
+        /* Поле для целой части - высокое */
+        .inputInt { width: 65px; height: 100px; font-size: 1.8em; font-weight: normal; color: #a0aec0;}
+        .inputInt:not(:placeholder-shown) { font-weight: bold; color: #2c3e50; }
+        
+        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 85px; }
+        /* Поля числителя и знаменателя - широкие */
+        .inputNum, .inputDen { width: 100%; height: 45px; font-size: 1.3em; color: #a0aec0; }
+        .inputNum:not(:placeholder-shown), .inputDen:not(:placeholder-shown) { font-weight: bold; color: #2c3e50; }
+        
+        .inputLine { width: 110%; height: 3px; background: #2c3e50; margin: 8px 0; border-radius: 2px; }
 
-        /* ВЫПАДАЮЩИЙ СПИСОК */
+        /* ВЫПАДАЮЩИЙ СПИСОК (ОБНОВЛЕНО ЦЕНТРИРОВАНИЕ) */
         select.compareSelect {
-            font-size: 1.2em; padding: 8px 12px; font-weight: bold; color: #2c3e50;
+            font-size: 1.2em; padding: 8px 30px 8px 12px; font-weight: bold; color: #2c3e50;
             border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; outline: none; background: #f8f9fa;
             min-width: 170px; text-align: center;
+            text-align-last: center; /* Принудительно центрирует выбранный вариант */
+            -moz-text-align-last: center;
+            appearance: none; /* Убираем стандартную стрелку браузера */
+            /* Кастомная стрелка для красоты */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
         }
-        select.compareSelect:focus { border-color: #3498db; }
+        select.compareSelect:focus { border-color: #3498db; box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); }
 
         button {
             background-color: #3498db; color: white; border: none; padding: 12px 24px;
@@ -307,11 +321,11 @@
                     ${visualHTML}
                     <div class="input-group">
                         <div class="inputContainerFrac" id="input_container_${task.id}">
-                            <input type="text" class="inputInt" id="input_${task.id}_int" placeholder="">
+                            <input type="text" class="inputInt" id="input_${task.id}_int" placeholder="|?">
                             <div class="inputFracBox">
-                                <input type="text" class="inputNum" id="input_${task.id}_num" placeholder="?">
+                                <input type="text" class="inputNum" id="input_${task.id}_num" placeholder="L">
                                 <div class="inputLine"></div>
-                                <input type="text" class="inputDen" id="input_${task.id}_den" placeholder="?">
+                                <input type="text" class="inputDen" id="input_${task.id}_den" placeholder="M">
                             </div>
                         </div>
 
