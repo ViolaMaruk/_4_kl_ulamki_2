@@ -54,7 +54,7 @@
         .fracLine { width: 100%; height: 1.5px; background: #333; margin: 1px 0;}
         .opBox { font-size: 1.2em; font-weight: bold; margin: 0 4px; color: #555;}
         
-        /* СТИЛИ ДЛЯ ЧИСЛОВОЙ ОСИ */
+        /* СТИЛИ ДЛЯ КРАСИВОЙ И ДЛИННОЙ ЧИСЛОВОЙ ОСИ */
         .numberLineContainer { position: relative; height: 60px; margin: 30px 20px 30px 20px; }
         .numberLineTrack { position: absolute; top: 30px; left: 0; right: 0; height: 2px; background: #333; }
         .numberLineTrack::after { content: ''; position: absolute; right: -10px; top: -4px; border-width: 5px 0 5px 10px; border-style: solid; border-color: transparent transparent transparent #333; }
@@ -66,48 +66,47 @@
         .pointDot { position: absolute; top: 5px; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #e67e22; border-radius: 50%; z-index: 2; }
         .pointMarker { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); color: #e67e22; font-weight: bold; font-style: italic; font-size: 1.2em; }
 
-        /* --- ОКНА ВВОДА --- */
+        /* --- ШИРОКИЕ ОКНА ВВОДА --- */
         .input-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-top: 15px;}
         
         .inputContainerFrac {
-            display: inline-flex; align-items: center; gap: 12px; font-family: 'Segoe UI', Tahoma, sans-serif;
+            display: inline-flex; align-items: center; gap: 10px; font-family: 'Georgia', serif;
+            font-size: 1.2em; padding: 10px; border-radius: 8px; background: #f8f9fa; border: 2px solid #cbd5e1;
         }
-        
         .inputContainerFrac input {
-            background: #fff; border: 2px solid #cbd5e1; border-radius: 8px; text-align: center;
-            font-size: 1.3em; font-weight: bold; color: #2c3e50; outline: none; transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border: none; border-bottom: 2px solid #94a3b8; text-align: center; border-radius: 0;
+            padding: 4px; outline: none; transition: border-color 0.2s; background: transparent;
         }
-        .inputContainerFrac input:focus { border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); }
+        .inputContainerFrac input:focus { border-color: #3498db; }
         
-        .inputInt { width: 50px; height: 50px; }
-        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 55px; }
-        .inputNum, .inputDen { width: 100%; height: 45px; }
-        .inputLine { width: 120%; height: 3px; background: #333; margin: 6px 0; border-radius: 2px;}
+        .inputInt { width: 75px; font-size: 1.2em; font-weight: bold; }
+        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 75px; line-height: 1.2; }
+        .inputNum, .inputDen { width: 100%; font-size: 1.1em; padding: 2px; }
+        .inputDen { border-bottom: none; }
+        .inputLine { width: 100%; height: 2px; background: #333; margin: 3px 0; }
 
         /* ВЫПАДАЮЩИЙ СПИСОК */
         select.compareSelect {
             font-size: 1.2em; padding: 8px 12px; font-weight: bold; color: #2c3e50;
-            border: 2px solid #cbd5e1; border-radius: 8px; cursor: pointer; outline: none; background: #fff;
-            min-width: 170px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; outline: none; background: #f8f9fa;
+            min-width: 170px; text-align: center;
         }
-        select.compareSelect:focus { border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); }
+        select.compareSelect:focus { border-color: #3498db; }
 
         button {
             background-color: #3498db; color: white; border: none; padding: 12px 24px;
-            font-size: 1.05em; border-radius: 8px; cursor: pointer; transition: 0.2s; font-weight: bold;
-            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+            font-size: 1.05em; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: bold;
         }
-        button:hover { background-color: #2980b9; transform: translateY(-1px); }
-        button.btn-hint { background-color: #f39c12; box-shadow: 0 4px 6px rgba(243, 156, 18, 0.2);}
+        button:hover { background-color: #2980b9; }
+        button.btn-hint { background-color: #f39c12; }
         button.btn-hint:hover { background-color: #d68910; }
-        button.btn-answer { background-color: #9b59b6; box-shadow: 0 4px 6px rgba(155, 89, 182, 0.2);}
+        button.btn-answer { background-color: #9b59b6; }
         button.btn-answer:hover { background-color: #8e44ad; }
         
         .feedback { font-weight: bold; margin-left: 10px; font-size: 1.1em;}
         .correct { color: #1e8449; }
         .incorrect { color: #c0392b; }
-        .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; font-style: normal; color: #856404; border-radius: 8px; font-size: 1.05em;}
+        .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; font-style: normal; color: #856404; border-radius: 0 6px 6px 0; font-size: 1.05em;}
 
         #start-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: white; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
@@ -210,7 +209,7 @@
             return `<div class="eqContainer">${text}</div>`;
         }
 
-        // PEŁNA BAZA ZADAŃ (Z NOWĄ NUMERACJĄ OD 1)
+        // БАЗА ЗАДАНИЙ (С ВЕРНУВШИМИСЯ ДЛИННЫМИ И КРАСИВЫМИ ОСЯМИ)
         const tasksData = [
             // PORÓWNYWANIE (12 ZADAŃ)
             { id: "c_a", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{2}{9}$", eq2: "$\\frac{5}{9}$", can: "<", hint: "Gdy mianowniki są równe, większy ułamek ma większy licznik." },
@@ -226,23 +225,25 @@
             { id: "c_k", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{5}{8}$", eq2: "$\\frac{5}{9}$", can: ">", hint: "Liczniki są równe, patrzymy na mianowniki." },
             { id: "c_l", type: "compare", text: "Porównaj podane liczby:", eq1: "$5\\frac{3}{8}$", eq2: "$6\\frac{4}{9}$", can: "<", hint: "Popatrz tylko na całości." },
 
-            // OŚ LICZBOWA (16 ZADAŃ)
-            { id: "l_a", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>a</b>:", customHTML: generateNumberLineHTML(0, 1, 4, [{val: 0.25, label: 'a'}]), can: {int: 0, num: 1, den: 4}, hint: "Jedna całość podzielona jest na 4 części." },
-            { id: "l_b", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>b</b>:", customHTML: generateNumberLineHTML(1, 2, 4, [{val: 1.25, label: 'b'}]), can: {int: 1, num: 1, den: 4}, hint: "Jedna mała kreska to $\\frac{1}{4}$." },
-            { id: "l_c", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>c</b>:", customHTML: generateNumberLineHTML(3, 4, 4, [{val: 3.75, label: 'c'}]), can: {int: 3, num: 3, den: 4}, hint: "To jest trzecia kreska za cyfrą 3." },
-            { id: "l_d", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>d</b>:", customHTML: generateNumberLineHTML(5, 6, 4, [{val: 5.25, label: 'd'}]), can: {int: 5, num: 1, den: 4}, hint: "To jest pierwsza kreska za 5." },
-            { id: "l_e", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>e</b>:", customHTML: generateNumberLineHTML(6, 7, 4, [{val: 6.5, label: 'e'}]), can: {int: 6, num: 1, den: 2}, hint: "Druga kreska za 6 to $\\frac{2}{4}$. Pamiętaj o SKRÓCENIU ułamka!" },
-            { id: "l_f", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>f</b>:", customHTML: generateNumberLineHTML(6, 7, 4, [{val: 6.75, label: 'f'}]), can: {int: 6, num: 3, den: 4}, hint: "Trzecia kreska za cyfrą 6." },
-            { id: "l_g", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>g</b>:", customHTML: generateNumberLineHTML(53, 54, 5, [{val: 53.4, label: 'g'}]), can: {int: 53, num: 2, den: 5}, hint: "Całość od 53 do 54 podzielono na 5 części. To jest 2 kreska." },
-            { id: "l_h", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>h</b>:", customHTML: generateNumberLineHTML(54, 55, 5, [{val: 54.4, label: 'h'}]), can: {int: 54, num: 2, den: 5}, hint: "Druga kreska za 54, mianownik to 5." },
-            { id: "l_i", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>i</b>:", customHTML: generateNumberLineHTML(55, 56, 5, [{val: 55.6, label: 'i'}]), can: {int: 55, num: 3, den: 5}, hint: "Trzecia kreska za 55." },
-            { id: "l_j", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>j</b>:", customHTML: generateNumberLineHTML(55, 56, 5, [{val: 55.8, label: 'j'}]), can: {int: 55, num: 4, den: 5}, hint: "Czwarta kreska za 55." },
-            { id: "l_k", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>k</b>:", customHTML: generateNumberLineHTML(56, 57, 5, [{val: 56.6, label: 'k'}]), can: {int: 56, num: 3, den: 5}, hint: "Trzecia kreska za 56." },
-            { id: "l_l", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>l</b>:", customHTML: generateNumberLineHTML(17, 18, 3, [{val: 17.333, label: 'l'}]), can: {int: 17, num: 1, den: 3}, hint: "Odcinek dzieli się na 3 części. To jest pierwsza kreska." },
-            { id: "l_m", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>m</b>:", customHTML: generateNumberLineHTML(18, 19, 3, [{val: 18.666, label: 'm'}]), can: {int: 18, num: 2, den: 3}, hint: "Druga kreska za 18." },
-            { id: "l_n", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>n</b>:", customHTML: generateNumberLineHTML(19, 20, 3, [{val: 19.666, label: 'n'}]), can: {int: 19, num: 2, den: 3}, hint: "Druga kreska za 19." },
-            { id: "l_o", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>o</b>:", customHTML: generateNumberLineHTML(20, 21, 3, [{val: 20.333, label: 'o'}]), can: {int: 20, num: 1, den: 3}, hint: "Pierwsza kreska za 20." },
-            { id: "l_p", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>p</b>:", customHTML: generateNumberLineHTML(21, 22, 3, [{val: 21.666, label: 'p'}]), can: {int: 21, num: 2, den: 3}, hint: "Druga kreska za 21." },
+            // ОПРЕДЕЛИТЬ ДЛИННЫЕ ОСИ (КАК В УЧЕБНИКЕ) (16 ZADAŃ)
+            { id: "l_a", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>a</b>:", customHTML: generateNumberLineHTML(0, 3, 4, [{val: 0.25, label: 'a'}]), can: {int: 0, num: 1, den: 4}, hint: "Odcinek od 0 do 1 jest podzielony na 4 części." },
+            { id: "l_b", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>b</b>:", customHTML: generateNumberLineHTML(0, 3, 4, [{val: 1.25, label: 'b'}]), can: {int: 1, num: 1, den: 4}, hint: "Jedna mała kreska za cyfrą 1." },
+            { id: "l_c", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>c</b>:", customHTML: generateNumberLineHTML(2, 5, 4, [{val: 3.75, label: 'c'}]), can: {int: 3, num: 3, den: 4}, hint: "Trzecia kreska za cyfrą 3." },
+            { id: "l_d", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>d</b>:", customHTML: generateNumberLineHTML(4, 7, 4, [{val: 5.25, label: 'd'}]), can: {int: 5, num: 1, den: 4}, hint: "Pierwsza kreska za 5." },
+            { id: "l_e", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>e</b>:", customHTML: generateNumberLineHTML(5, 8, 4, [{val: 6.5, label: 'e'}]), can: {int: 6, num: 1, den: 2}, hint: "Druga kreska za 6 to 2/4. Pamiętaj o SKRÓCENIU ułamka!" },
+            { id: "l_f", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>f</b>:", customHTML: generateNumberLineHTML(5, 8, 4, [{val: 6.75, label: 'f'}]), can: {int: 6, num: 3, den: 4}, hint: "Trzecia kreska za cyfrą 6." },
+            
+            { id: "l_g", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>g</b>:", customHTML: generateNumberLineHTML(53, 56, 5, [{val: 53 + 2/5, label: 'g'}]), can: {int: 53, num: 2, den: 5}, hint: "Odcinek dzieli się na 5 części. To 2 kreska za 53." },
+            { id: "l_h", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>h</b>:", customHTML: generateNumberLineHTML(53, 56, 5, [{val: 54 + 2/5, label: 'h'}]), can: {int: 54, num: 2, den: 5}, hint: "Druga kreska za 54." },
+            { id: "l_i", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>i</b>:", customHTML: generateNumberLineHTML(54, 57, 5, [{val: 55 + 3/5, label: 'i'}]), can: {int: 55, num: 3, den: 5}, hint: "Trzecia kreska za 55." },
+            { id: "l_j", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>j</b>:", customHTML: generateNumberLineHTML(54, 57, 5, [{val: 55 + 4/5, label: 'j'}]), can: {int: 55, num: 4, den: 5}, hint: "Czwarta kreska za 55." },
+            { id: "l_k", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>k</b>:", customHTML: generateNumberLineHTML(55, 58, 5, [{val: 56 + 3/5, label: 'k'}]), can: {int: 56, num: 3, den: 5}, hint: "Trzecia kreska za 56." },
+            
+            { id: "l_l", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>l</b>:", customHTML: generateNumberLineHTML(17, 20, 3, [{val: 17 + 1/3, label: 'l'}]), can: {int: 17, num: 1, den: 3}, hint: "Odcinek dzieli się na 3 części. To jest pierwsza kreska." },
+            { id: "l_m", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>m</b>:", customHTML: generateNumberLineHTML(17, 20, 3, [{val: 18 + 2/3, label: 'm'}]), can: {int: 18, num: 2, den: 3}, hint: "Druga kreska za 18." },
+            { id: "l_n", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>n</b>:", customHTML: generateNumberLineHTML(18, 21, 3, [{val: 19 + 2/3, label: 'n'}]), can: {int: 19, num: 2, den: 3}, hint: "Druga kreska za 19." },
+            { id: "l_o", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>o</b>:", customHTML: generateNumberLineHTML(19, 22, 3, [{val: 20 + 1/3, label: 'o'}]), can: {int: 20, num: 1, den: 3}, hint: "Pierwsza kreska za 20." },
+            { id: "l_p", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>p</b>:", customHTML: generateNumberLineHTML(20, 23, 3, [{val: 21 + 2/3, label: 'p'}]), can: {int: 21, num: 2, den: 3}, hint: "Druga kreska za 21." },
 
             // ZAMIEŃ NA UŁAMKI NIESKRACALNE (12 ZADAŃ)
             { id: "s_1", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{15}{35}$", can: {int: 0, num: 3, den: 7}, hint: "Podziel przez 5." },
@@ -253,7 +254,6 @@
             { id: "s_6", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{48}{84}$", can: {int: 0, num: 4, den: 7}, hint: "Podziel przez 12." },
             { id: "s_7", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{10}{1000}$", can: {int: 0, num: 1, den: 100}, hint: "Skreśl po jednym zerze." },
             { id: "s_8", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{22}{88}$", can: {int: 0, num: 1, den: 4}, hint: "Podziel przez 22." },
-            // NOWE 4 ZADANIA:
             { id: "s_9", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{18}{27}$", can: {int: 0, num: 2, den: 3}, hint: "Podziel przez 9." },
             { id: "s_10", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{14}{49}$", can: {int: 0, num: 2, den: 7}, hint: "Podziel przez 7." },
             { id: "s_11", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{75}{125}$", can: {int: 0, num: 3, den: 5}, hint: "Podziel licznik i mianownik przez 25." },
@@ -279,9 +279,8 @@
 
         const container = document.getElementById("tasks-container");
 
-        // ТУТ МЫ ГЕНЕРИРУЕМ ЗАДАЧИ С НОРМАЛЬНОЙ НУМЕРАЦИЕЙ ОТ 1
         tasksData.forEach((task, index) => {
-            let taskNumber = index + 1; // Получаем номер от 1 до 52
+            let taskNumber = index + 1; 
             resultsData[task.id] = "Nie rozwiązano"; 
             userAttemptsStructures[task.id] = [];
             
