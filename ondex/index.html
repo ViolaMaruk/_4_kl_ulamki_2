@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trening Ułamkowy: Skracanie, Całości, Dodawanie</title>
+    <title>Oś osobowa i Ułamki Zwykłe</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -52,7 +52,7 @@
         .fracBox { display: flex; flex-direction: column; align-items: center; line-height: 1; }
         .numPart, .denPart { font-size: 0.9em; padding: 1px;}
         .fracLine { width: 100%; height: 1.5px; background: #333; margin: 1px 0;}
-        .opBox { font-size: 1.2em; font-weight: bold; margin: 0 8px; color: #555;}
+        .opBox { font-size: 1.2em; font-weight: bold; margin: 0 4px; color: #555;}
         
         /* СТИЛИ ДЛЯ КРАСИВОЙ И ДЛИННОЙ ЧИСЛОВОЙ ОСИ */
         .numberLineContainer { position: relative; height: 60px; margin: 30px 20px 30px 20px; }
@@ -71,31 +71,35 @@
         
         .inputContainerFrac {
             display: inline-flex; align-items: center; gap: 12px; font-family: 'Segoe UI', Tahoma, sans-serif;
-            padding: 10px; 
+            padding: 10px; /* Убраны фон и рамка, чтобы выглядело чисто */
         }
         .inputContainerFrac input {
-            border: 2px solid #cbd5e1; text-align: center; border-radius: 8px; 
+            border: 2px solid #cbd5e1; text-align: center; border-radius: 8px; /* Добавлены скругленные рамки */
             outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: #fff; color: #2c3e50;
             box-sizing: border-box;
         }
         .inputContainerFrac input:focus { border-color: #3498db; box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); }
         
+        /* Поле для целой части - высокое */
         .inputInt { width: 65px; height: 100px; font-size: 1.8em; font-weight: normal; color: #a0aec0;}
         .inputInt:not(:placeholder-shown) { font-weight: bold; color: #2c3e50; }
         
         .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 85px; }
+        /* Поля числителя и знаменателя - широкие */
         .inputNum, .inputDen { width: 100%; height: 45px; font-size: 1.3em; color: #a0aec0; }
         .inputNum:not(:placeholder-shown), .inputDen:not(:placeholder-shown) { font-weight: bold; color: #2c3e50; }
         
         .inputLine { width: 110%; height: 3px; background: #2c3e50; margin: 8px 0; border-radius: 2px; }
 
+        /* ВЫПАДАЮЩИЙ СПИСОК (ОБНОВЛЕНО ЦЕНТРИРОВАНИЕ) */
         select.compareSelect {
             font-size: 1.2em; padding: 8px 30px 8px 12px; font-weight: bold; color: #2c3e50;
             border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; outline: none; background: #f8f9fa;
             min-width: 170px; text-align: center;
-            text-align-last: center; 
+            text-align-last: center; /* Принудительно центрирует выбранный вариант */
             -moz-text-align-last: center;
-            appearance: none; 
+            appearance: none; /* Убираем стандартную стрелку браузера */
+            /* Кастомная стрелка для красоты */
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 10px center;
@@ -145,8 +149,8 @@
 
     <div id="app-content">
         <div class="header-container">
-            <h1>Zadania z Ułamków</h1>
-            <p class="description">Skracanie ułamków, wyłączanie całości, zamiana na ułamki niewłaściwe oraz dodawanie.</p>
+            <h1>Ułamki Zwykłe - Mega Trening</h1>
+            <p class="description">Porównywanie, oś liczbowa, skracanie i wyłączanie całości.</p>
             <div class="instructions">
                 <b>📌 Ważne wskazówki przed startem:</b><br>
                 1. <b>Skracanie i całości:</b> Wpisuj odpowiedzi w najprostszej postaci (np. skróć ułamek i wyłącz całość).<br>
@@ -219,41 +223,66 @@
             return `<div class="eqContainer">${text}</div>`;
         }
 
-        // --- ZAKTUALIZOWANA BAZA ZADAŃ NA PODSTAWIE ZRZUTÓW EKRANU ---
+        // БАЗА ЗАДАНИЙ (С ВЕРНУВШИМИСЯ ДЛИННЫМИ И КРАСИВЫМИ ОСЯМИ)
         const tasksData = [
-            // SKRACANIE UŁAMKÓW
-            { id: "skr_1", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{12}{18}$", can: {int: 0, num: 2, den: 3}, hint: "Podziel licznik i mianownik przez ich największy wspólny dzielnik (6)." },
-            { id: "skr_2", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{15}{25}$", can: {int: 0, num: 3, den: 5}, hint: "Podziel przez 5." },
-            { id: "skr_3", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{24}{32}$", can: {int: 0, num: 3, den: 4}, hint: "Podziel przez 8." },
-            { id: "skr_4", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{14}{49}$", can: {int: 0, num: 2, den: 7}, hint: "Podziel przez 7." },
-            { id: "skr_5", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{30}{40}$", can: {int: 0, num: 3, den: 4}, hint: "Skreśl zera (podziel przez 10)." },
-            { id: "skr_6", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{18}{45}$", can: {int: 0, num: 2, den: 5}, hint: "Podziel przez 9." },
-            { id: "skr_7", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{36}{48}$", can: {int: 0, num: 3, den: 4}, hint: "Podziel przez 12." },
-            { id: "skr_8", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{45}{60}$", can: {int: 0, num: 3, den: 4}, hint: "Podziel przez 15." },
-            { id: "skr_9", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{16}{64}$", can: {int: 0, num: 1, den: 4}, hint: "Podziel przez 16." },
-            { id: "skr_10", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{75}{100}$", can: {int: 0, num: 3, den: 4}, hint: "Podziel przez 25." },
+            // PORÓWNYWANIE (12 ZADAŃ)
+            { id: "c_a", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{2}{9}$", eq2: "$\\frac{5}{9}$", can: "<", hint: "Gdy mianowniki są równe, większy ułamek ma większy licznik." },
+            { id: "c_b", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{15}{21}$", eq2: "$\\frac{13}{21}$", can: ">", hint: "Gdy mianowniki są równe, większy ułamek ma większy licznik." },
+            { id: "c_c", type: "compare", text: "Porównaj podane liczby:", eq1: "$2\\frac{1}{4}$", eq2: "$3\\frac{3}{4}$", can: "<", hint: "Zwróć uwagę na liczby całkowite." },
+            { id: "c_d", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{1}{16}$", eq2: "$\\frac{1}{17}$", can: ">", hint: "Gdy liczniki są równe, WIĘKSZY jest ten ułamek, który ma MNIEJSZY mianownik." },
+            { id: "c_e", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{7}{11}$", eq2: "$\\frac{7}{15}$", can: ">", hint: "Gdy liczniki są równe, WIĘKSZY jest ten ułamek, który ma MNIEJSZY mianownik." },
+            { id: "c_f", type: "compare", text: "Porównaj podane liczby:", eq1: "$5\\frac{1}{6}$", eq2: "$5\\frac{1}{9}$", can: ">", hint: "Całości są równe. Porównaj same ułamki. Który ma mniejszy mianownik?" },
+            { id: "c_g", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{1}{8}$", eq2: "$\\frac{1}{11}$", can: ">", hint: "Mniejsze kawałki (z 11) czy większe kawałki (z 8)?" },
+            { id: "c_h", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{4}{7}$", eq2: "$\\frac{4}{13}$", can: ">", hint: "Gdy liczniki są równe, ułamek o mniejszym mianowniku jest większy." },
+            { id: "c_i", type: "compare", text: "Porównaj podane liczby:", eq1: "$4\\frac{3}{7}$", eq2: "$5\\frac{3}{10}$", can: "<", hint: "Popatrz na całości! 4 jest mniejsze od 5." },
+            { id: "c_j", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{7}{15}$", eq2: "$\\frac{8}{15}$", can: "<", hint: "Większy licznik oznacza większy ułamek." },
+            { id: "c_k", type: "compare", text: "Porównaj podane liczby:", eq1: "$\\frac{5}{8}$", eq2: "$\\frac{5}{9}$", can: ">", hint: "Liczniki są równe, patrzymy na mianowniki." },
+            { id: "c_l", type: "compare", text: "Porównaj podane liczby:", eq1: "$5\\frac{3}{8}$", eq2: "$6\\frac{4}{9}$", can: "<", hint: "Popatrz tylko na całości." },
 
-            // WYŁĄCZANIE CAŁOŚCI
-            { id: "wyl_1", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{17}{5}$", can: {int: 3, num: 2, den: 5}, hint: "Ile piątek mieści się w 17?" },
-            { id: "wyl_2", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{23}{4}$", can: {int: 5, num: 3, den: 4}, hint: "Ile czwórek mieści się w 23?" },
-            { id: "wyl_3", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{38}{7}$", can: {int: 5, num: 3, den: 7}, hint: "Ile siódemek mieści się w 38?" },
-            { id: "wyl_4", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{45}{8}$", can: {int: 5, num: 5, den: 8}, hint: "Ile ósemek mieści się w 45?" },
-            { id: "wyl_5", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{52}{9}$", can: {int: 5, num: 7, den: 9}, hint: "Ile dziewiątek mieści się w 52?" },
+            // ОПРЕДЕЛИТЬ ДЛИННЫЕ ОСИ (КАК В УЧЕБНИКЕ) (16 ZADAŃ)
+            // OŚ LICZBOWA
+            { id: "l1", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>a</b>:",
+              customHTML: generateNumberLineHTML(0, 3, 2, [{val: 0.5, label: 'a'}]),
+              can: {int: 0, num: 1, den: 2}, hint: "Odcinek od 0 do 1 jest podzielony na 2 równe części." },
+            { id: "l2", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>c</b>:",
+              customHTML: generateNumberLineHTML(2, 5, 2, [{val: 3.5, label: 'c'}]),
+              can: {int: 3, num: 1, den: 2}, hint: "Punkt c znajduje się dokładnie pośrodku między 3 a 4." },
+            { id: "l3", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>j</b>:",
+              customHTML: generateNumberLineHTML(54, 57, 4, [{val: 55.75, label: 'j'}]),
+              can: {int: 55, num: 3, den: 4}, hint: "Odcinek od 55 do 56 dzieli się na 4 części. Punkt j leży na 3. małej kresce za 55." },
+            { id: "l4", type: "line", text: "Odczytaj, jaką liczbę zaznaczono na osi jako punkt <b>n</b>:",
+              customHTML: generateNumberLineHTML(18, 21, 5, [{val: 19.6, label: 'n'}]),
+              can: {int: 19, num: 3, den: 5}, hint: "Każda jednostka podzielona jest na 5 części. Punkt n to 3 kreski za liczbą 19." },
+            // ZAMIEŃ NA UŁAMKI NIESKRACALNE (12 ZADAŃ)
+            { id: "s_1", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{15}{35}$", can: {int: 0, num: 3, den: 7}, hint: "Podziel przez 5." },
+            { id: "s_2", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{24}{36}$", can: {int: 0, num: 2, den: 3}, hint: "Podziel przez 12." },
+            { id: "s_3", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{32}{160}$", can: {int: 0, num: 1, den: 5}, hint: "Ile razy 32 mieści się w 160? Równo 5!" },
+            { id: "s_4", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{45}{100}$", can: {int: 0, num: 9, den: 20}, hint: "Podziel licznik i mianownik przez 5." },
+            { id: "s_5", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{26}{65}$", can: {int: 0, num: 2, den: 5}, hint: "Obie liczby dzielą się przez 13!" },
+            { id: "s_6", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{48}{84}$", can: {int: 0, num: 4, den: 7}, hint: "Podziel przez 12." },
+            { id: "s_7", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{10}{1000}$", can: {int: 0, num: 1, den: 100}, hint: "Skreśl po jednym zerze." },
+            { id: "s_8", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{22}{88}$", can: {int: 0, num: 1, den: 4}, hint: "Podziel przez 22." },
+            { id: "s_9", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{18}{27}$", can: {int: 0, num: 2, den: 3}, hint: "Podziel przez 9." },
+            { id: "s_10", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{14}{49}$", can: {int: 0, num: 2, den: 7}, hint: "Podziel przez 7." },
+            { id: "s_11", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{75}{125}$", can: {int: 0, num: 3, den: 5}, hint: "Podziel licznik i mianownik przez 25." },
+            { id: "s_12", type: "frac", text: "Zamień na ułamek nieskracalny:", eq: "$\\frac{16}{64}$", can: {int: 0, num: 1, den: 4}, hint: "Podziel obie liczby przez 16." },
 
-            // ZAMIANA NA UŁAMKI NIEWŁAŚCIWE
-            { id: "zam_1", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$2\\frac{3}{4}$", can: {int: 0, num: 11, den: 4}, hint: "Pomnóż całość przez mianownik i dodaj licznik (2 * 4 + 3)." },
-            { id: "zam_2", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$3\\frac{2}{5}$", can: {int: 0, num: 17, den: 5}, hint: "3 * 5 + 2 = ?" },
-            { id: "zam_3", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$5\\frac{1}{6}$", can: {int: 0, num: 31, den: 6}, hint: "5 * 6 + 1 = ?" },
-            { id: "zam_4", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$4\\frac{5}{7}$", can: {int: 0, num: 33, den: 7}, hint: "4 * 7 + 5 = ?" },
-            { id: "zam_5", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$7\\frac{3}{8}$", can: {int: 0, num: 59, den: 8}, hint: "7 * 8 + 3 = ?" },
+            // WYŁĄCZ CAŁOŚCI Z UŁAMKÓW (12 ZADAŃ)
+            { id: "w_a1", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{9}{2}$", can: {int: 4, num: 1, den: 2}, hint: "Ile dwójek mieści się w 9?" },
+            { id: "w_a2", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{13}{2}$", can: {int: 6, num: 1, den: 2}, hint: "13 : 2 = 6 reszta 1." },
+            { id: "w_a3", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{25}{2}$", can: {int: 12, num: 1, den: 2}, hint: "25 : 2 = 12 reszta 1." },
+            
+            { id: "w_b1", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{14}{3}$", can: {int: 4, num: 2, den: 3}, hint: "Ile trójek mieści się w 14?" },
+            { id: "w_b2", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{21}{3}$", can: {int: 7, num: 0, den: 0}, hint: "Tutaj dzieli się bez reszty!" },
+            { id: "w_b3", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{34}{3}$", can: {int: 11, num: 1, den: 3}, hint: "33 dzieli się na 3. Zostaje 1." },
 
-            // OBLICZENIA (DODAWANIE)
-            { id: "dod_a", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{4}{13} + \\frac{7}{13}$", can: {int: 0, num: 11, den: 13}, hint: "Dodaj liczniki, mianownik zostaw bez zmian." },
-            { id: "dod_b", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{5}{14} + \\frac{11}{14}$", can: {int: 1, num: 1, den: 7}, hint: "Najpierw dodaj, a potem wyłącz całości i skróć wynik." },
-            { id: "dod_c", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{7}{12} + \\frac{1}{12}$", can: {int: 0, num: 2, den: 3}, hint: "Dodaj liczniki, a potem skróć ułamek." },
-            { id: "dod_d", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{8}{15} + \\frac{12}{15}$", can: {int: 1, num: 1, den: 3}, hint: "Otrzymasz ułamek niewłaściwy. Wyłącz z niego całości i skróć." },
-            { id: "dod_e", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{4}{9} + \\frac{7}{9}$", can: {int: 1, num: 2, den: 9}, hint: "Otrzymasz ułamek niewłaściwy. Wyłącz z niego całości." },
-            { id: "dod_f", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{13}{20} + \\frac{9}{20}$", can: {int: 1, num: 1, den: 10}, hint: "Otrzymasz ułamek niewłaściwy. Wyłącz z niego całości i skróć resztę." }
+            { id: "w_c1", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{15}{4}$", can: {int: 3, num: 3, den: 4}, hint: "Ile czwórek mieści się w 15?" },
+            { id: "w_c2", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{28}{4}$", can: {int: 7, num: 0, den: 0}, hint: "Dzieli się bez reszty." },
+            { id: "w_c3", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{47}{4}$", can: {int: 11, num: 3, den: 4}, hint: "Ile czwórek mieści się w 47?" },
+
+            { id: "w_d1", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{31}{10}$", can: {int: 3, num: 1, den: 10}, hint: "W 31 mieszczą się 3 dziesiątki." },
+            { id: "w_d2", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{79}{10}$", can: {int: 7, num: 9, den: 10}, hint: "W 79 mieści się 7 dziesiątek." },
+            { id: "w_d3", type: "frac", text: "Wyłącz całości z ułamka:", eq: "$\\frac{130}{10}$", can: {int: 13, num: 0, den: 0}, hint: "Dzieli się bez reszty!" }
         ];
 
         const container = document.getElementById("tasks-container");
@@ -408,7 +437,7 @@
                     feedbackEl.textContent = "Już podałeś taką odpowiedź. Spróbuj inną!";
                 } else {
                     userAttemptsStructures[taskId].push(attemptsString); 
-                    feedbackEl.textContent = "Błąd, spróbuj jeszcze raz. Pamiętaj o uproszczeniu wyniku (wyłączenie całości / skracanie)!";
+                    feedbackEl.textContent = "Błąd, spróbuj jeszcze raz. Pamiętaj o wyłączeniu całości i skróceniu ułamka!";
                 }
                 feedbackEl.className = "feedback incorrect"; 
                 cardEl.classList.add("incorrect-bg");
@@ -478,7 +507,7 @@
                 }
             });
 
-            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\nTEST: UŁAMKI (Skracanie, Całości, Dodawanie)\n\nWYNIK GŁÓWNY:\n- Samodzielnie: ${correctCount} / ${tasksData.length}\n- Z podpowiedzią: ${hintCount} / ${tasksData.length}\n- Puste: ${notSolvedCount} / ${tasksData.length}\n\nSZCZEGÓŁY:\n${detailedReport}`;
+            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\nTEST: NOWE UŁAMKI (Oś, Porównywanie, Skracanie)\n\nWYNIK GŁÓWNY:\n- Samodzielnie: ${correctCount} / ${tasksData.length}\n- Z podpowiedzią: ${hintCount} / ${tasksData.length}\n- Puste: ${notSolvedCount} / ${tasksData.length}\n\nSZCZEGÓŁY:\n${detailedReport}`;
 
             const btnSubmit = document.getElementById("btn-submit");
             btnSubmit.textContent = "Wysyłanie...";
@@ -490,7 +519,7 @@
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({
                     access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa", 
-                    subject: `Wyniki (Nowe Zadania z Ułamków - 26 zadań): ${currentStudent} (${currentClass})`,
+                    subject: `Wyniki (Nowe Ułamki Zwykłe - 52 zadania): ${currentStudent} (${currentClass})`,
                     from_name: "Test Matematyczny",
                     message: finalMessage
                 })
