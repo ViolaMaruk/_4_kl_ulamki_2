@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trening Ułamkowy: Skracanie, Całości, Dodawanie</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('background2.jpg');
+            background-size: cover; 
+            background-position: center;
+            background-attachment: fixed; 
+            background-repeat: no-repeat;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+        .header-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        h1 {
+            text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db;
+            padding-bottom: 10px; margin-top: 0; margin-bottom: 15px;
+        }
+        .description { text-align: center; font-size: 1.1em; color: #555; margin: 0; }
+        .instructions {
+            background-color: #e8f4f8; border-left: 4px solid #3498db;
+            padding: 10px 15px; margin-top: 15px; font-size: 0.95em; border-radius: 0 6px 6px 0;
+        }
+        
+        .task-card {
+            background: #fff; padding: 20px 25px; margin-bottom: 20px;
+            border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-left: 6px solid #3498db; transition: all 0.3s;
+        }
+        .task-card.correct-bg { background-color: #d4edda; border-left-color: #28a745; }
+        .task-card.incorrect-bg { background-color: #f8d7da; border-left-color: #dc3545; }
+        .task-text { font-size: 1.2em; margin-bottom: 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;}
+        
+        /* СТИЛИ ДЛЯ ИДЕАЛЬНОЙ ОТРИСОВКИ ДРОБЕЙ */
+        .eqContainer { display: inline-flex; align-items: center; gap: 4px; font-family: 'Georgia', serif; font-size: 1.1em;}
+        .fracComp { display: inline-flex; align-items: center;}
+        .fracComp.mixed { gap: 3px; }
+        .intPart { font-size: 1.2em; font-weight: bold;}
+        .fracBox { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+        .numPart, .denPart { font-size: 0.9em; padding: 1px;}
+        .fracLine { width: 100%; height: 1.5px; background: #333; margin: 1px 0;}
+        .opBox { font-size: 1.2em; font-weight: bold; margin: 0 8px; color: #555;}
+        
+        /* СТИЛИ ДЛЯ КРАСИВОЙ И ДЛИННОЙ ЧИСЛОВОЙ ОСИ */
+        .numberLineContainer { position: relative; height: 60px; margin: 30px 20px 30px 20px; }
+        .numberLineTrack { position: absolute; top: 30px; left: 0; right: 0; height: 2px; background: #333; }
+        .numberLineTrack::after { content: ''; position: absolute; right: -10px; top: -4px; border-width: 5px 0 5px 10px; border-style: solid; border-color: transparent transparent transparent #333; }
+        .numberLineTicks { position: absolute; top: 25px; left: 0; right: 0; height: 10px; }
+        .tick { position: absolute; width: 2px; background: #333; transform: translateX(-50%); }
+        .tick.major { top: 0; height: 12px; }
+        .tick.minor { top: 2px; height: 8px; }
+        .tickLabel { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); font-size: 0.95em; font-weight: bold; }
+        .pointDot { position: absolute; top: 5px; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #e67e22; border-radius: 50%; z-index: 2; }
+        .pointMarker { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); color: #e67e22; font-weight: bold; font-style: italic; font-size: 1.2em; }
+
+        /* --- ШИРОКИЕ ОКНА ВВОДА (ОБНОВЛЕННЫЙ ДИЗАЙН) --- */
+        .input-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-top: 15px;}
+        
+        .inputContainerFrac {
+            display: inline-flex; align-items: center; gap: 12px; font-family: 'Segoe UI', Tahoma, sans-serif;
+            padding: 10px; 
+        }
+        .inputContainerFrac input {
+            border: 2px solid #cbd5e1; text-align: center; border-radius: 8px; 
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: #fff; color: #2c3e50;
+            box-sizing: border-box;
+        }
+        .inputContainerFrac input:focus { border-color: #3498db; box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); }
+        
+        .inputInt { width: 65px; height: 100px; font-size: 1.8em; font-weight: normal; color: #a0aec0;}
+        .inputInt:not(:placeholder-shown) { font-weight: bold; color: #2c3e50; }
+        
+        .inputFracBox { display: flex; flex-direction: column; align-items: center; width: 85px; }
+        .inputNum, .inputDen { width: 100%; height: 45px; font-size: 1.3em; color: #a0aec0; }
+        .inputNum:not(:placeholder-shown), .inputDen:not(:placeholder-shown) { font-weight: bold; color: #2c3e50; }
+        
+        .inputLine { width: 110%; height: 3px; background: #2c3e50; margin: 8px 0; border-radius: 2px; }
+
+        select.compareSelect {
+            font-size: 1.2em; padding: 8px 30px 8px 12px; font-weight: bold; color: #2c3e50;
+            border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; outline: none; background: #f8f9fa;
+            min-width: 170px; text-align: center;
+            text-align-last: center; 
+            -moz-text-align-last: center;
+            appearance: none; 
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+        }
+        select.compareSelect:focus { border-color: #3498db; box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); }
+
+        button {
+            background-color: #3498db; color: white; border: none; padding: 12px 24px;
+            font-size: 1.05em; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: bold;
+        }
+        button:hover { background-color: #2980b9; }
+        button.btn-hint { background-color: #f39c12; }
+        button.btn-hint:hover { background-color: #d68910; }
+        button.btn-answer { background-color: #9b59b6; }
+        button.btn-answer:hover { background-color: #8e44ad; }
+        
+        .feedback { font-weight: bold; margin-left: 10px; font-size: 1.1em;}
+        .correct { color: #1e8449; }
+        .incorrect { color: #c0392b; }
+        .hint-text { display: none; margin-top: 15px; padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; font-style: normal; color: #856404; border-radius: 0 6px 6px 0; font-size: 1.05em;}
+
+        #start-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .modal-content input { width: 100%; margin-bottom: 15px; padding: 10px; box-sizing: border-box; text-align: center; font-size: 1.1em; border: 2px solid #e2e8f0; border-radius: 6px; }
+        .modal-content button { width: 100%; font-size: 1.1em; padding: 12px; background-color: #27ae60;}
+        .modal-content button:hover { background-color: #2ecc71;}
+        
+        #app-content { display: none; }
+        .finish-container { text-align: center; background: rgba(255,255,255,0.95); padding: 30px; border-radius: 12px; margin-top: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .btn-finish { background-color: #e74c3c; font-size: 1.2em; padding: 15px 30px; }
+        .btn-finish:hover { background-color: #c0392b; }
+    </style>
+</head>
+<body>
+
+    <div id="start-modal">
+        <div class="modal-content">
+            <h2>Witaj! 👋</h2>
+            <p>Przed rozpoczęciem testu wpisz swoje dane:</p>
+            <input type="text" id="student-name" placeholder="Imię i nazwisko" required>
+            <input type="text" id="student-class" placeholder="Klasa (np. 6A)" required>
+            <button onclick="startTest()">Rozpocznij test</button>
+            <p id="modal-error" style="color: red; font-size: 0.9em; display: none;">Proszę wypełnić wszystkie pola!</p>
+        </div>
+    </div>
+
+    <div id="app-content">
+        <div class="header-container">
+            <h1>Zadania z Ułamków</h1>
+            <p class="description">Skracanie ułamków, wyłączanie całości, zamiana na ułamki niewłaściwe oraz dodawanie.</p>
+            <div class="instructions">
+                <b>📌 Ważne wskazówki przed startem:</b><br>
+                1. <b>Skracanie i całości:</b> Wpisuj odpowiedzi w najprostszej postaci (np. skróć ułamek i wyłącz całość).<br>
+                2. <b>Wypełnianie:</b> Pierwsze pole po lewej to całości. Górne pole to licznik, dolne to mianownik.<br>
+                3. Jeśli odpowiedź to sama liczba całkowita, wypełnij tylko pole całości. Jeśli sam ułamek - tylko licznik i mianownik (w polu całości możesz zostawić puste lub wpisać 0).
+            </div>
+        </div>
+
+        <div id="tasks-container"></div>
+
+        <div class="finish-container">
+            <h2 id="finish-text">Skończyłeś? Wyślij wyniki do nauczyciela!</h2>
+            <button class="btn-finish" id="btn-submit" onclick="sendResults()">Wyślij wyniki 📧</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStudent = "";
+        let currentClass = "";
+        let resultsData = {}; 
+        let userAttemptsStructures = {}; 
+
+        function startTest() {
+            const nameInput = document.getElementById("student-name").value.trim();
+            const classInput = document.getElementById("student-class").value.trim();
+            if(nameInput === "" || classInput === "") {
+                document.getElementById("modal-error").style.display = "block"; return;
+            }
+            currentStudent = nameInput; currentClass = classInput;
+            document.getElementById("start-modal").style.display = "none";
+            document.getElementById("app-content").style.display = "block";
+        }
+
+        function generateNumberLineHTML(start, end, segments, points) {
+            let html = '<div class="numberLineContainer"><div class="numberLineTrack"></div><div class="numberLineTicks">';
+            let totalTicks = (end - start) * segments;
+            for (let i = 0; i <= totalTicks; i++) {
+                let isMajor = (i % segments === 0);
+                let val = start + (i / segments);
+                let leftPercent = (i / totalTicks) * 100;
+                let point = points.find(p => Math.abs(p.val - val) < 0.001);
+
+                html += `<div class="tick ${isMajor ? 'major' : 'minor'}" style="left: ${leftPercent}%">`;
+                if (isMajor) html += `<div class="tickLabel">${start + i/segments}</div>`;
+                if (point) html += `<div class="pointDot"></div><div class="pointMarker">${point.label}</div>`;
+                html += `</div>`;
+            }
+            html += '</div></div>';
+            return html;
+        }
+
+        function renderFractionEquationHTML(latex) {
+            if (!latex) return '';
+            let text = latex.replace(/\$/g, '');
+            text = text.replace(/([+\-=])/g, '<div class="opBox">$1</div>');
+
+            const pattern = /((\d+)\s*)?\\frac\{(\d+)\}\{(\d+)\}/g;
+            text = text.replace(pattern, (match, p1, p2, p3, p4) => {
+                let intPart = p2 ? p2.trim() : '';
+                let mixedClass = intPart ? 'mixed' : '';
+                return `<div class="fracComp ${mixedClass}">
+                            ${intPart ? `<div class="intPart">${intPart}</div>` : ''}
+                            <div class="fracBox">
+                                <div class="numPart">${p3}</div>
+                                <div class="fracLine"></div>
+                                <div class="denPart">${p4}</div>
+                            </div>
+                        </div>`;
+            });
+            return `<div class="eqContainer">${text}</div>`;
+        }
+
+        // --- ZAKTUALIZOWANA BAZA ZADAŃ NA PODSTAWIE ZRZUTÓW EKRANU ---
+        const tasksData = [
+            // SKRACANIE UŁAMKÓW
+            { id: "skr_1", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{12}{18}$", can: {int: 0, num: 2, den: 3}, hint: "Podziel licznik i mianownik przez ich największy wspólny dzielnik (6)." },
+            { id: "skr_2", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{15}{25}$", can: {int: 0, num: 3, den: 5}, hint: "Podziel przez 5." },
+            { id: "skr_3", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{24}{32}$", can: {int: 0, num: 3, den: 4}, hint: "Podziel przez 8." },
+            { id: "skr_4", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{14}{49}$", can: {int: 0, num: 2, den: 7}, hint: "Podziel przez 7." },
+            { id: "skr_5", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{30}{40}$", can: {int: 0, num: 3, den: 4}, hint: "Skreśl zera (podziel przez 10)." },
+            { id: "skr_6", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{18}{45}$", can: {int: 0, num: 2, den: 5}, hint: "Podziel przez 9." },
+            { id: "skr_7", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{36}{48}$", can: {int: 0, num: 3, den: 4}, hint: "Podziel przez 12." },
+            { id: "skr_8", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{45}{60}$", can: {int: 0, num: 3, den: 4}, hint: "Podziel przez 15." },
+            { id: "skr_9", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{16}{64}$", can: {int: 0, num: 1, den: 4}, hint: "Podziel przez 16." },
+            { id: "skr_10", type: "frac", text: "Skróć ułamek do postaci nieskracalnej:", eq: "$\\frac{75}{100}$", can: {int: 0, num: 3, den: 4}, hint: "Podziel przez 25." },
+
+            // WYŁĄCZANIE CAŁOŚCI
+            { id: "wyl_1", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{17}{5}$", can: {int: 3, num: 2, den: 5}, hint: "Ile piątek mieści się w 17?" },
+            { id: "wyl_2", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{23}{4}$", can: {int: 5, num: 3, den: 4}, hint: "Ile czwórek mieści się w 23?" },
+            { id: "wyl_3", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{38}{7}$", can: {int: 5, num: 3, den: 7}, hint: "Ile siódemek mieści się w 38?" },
+            { id: "wyl_4", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{45}{8}$", can: {int: 5, num: 5, den: 8}, hint: "Ile ósemek mieści się w 45?" },
+            { id: "wyl_5", type: "frac", text: "Wyłącz całości z podanego ułamka:", eq: "$\\frac{52}{9}$", can: {int: 5, num: 7, den: 9}, hint: "Ile dziewiątek mieści się w 52?" },
+
+            // ZAMIANA NA UŁAMKI NIEWŁAŚCIWE
+            { id: "zam_1", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$2\\frac{3}{4}$", can: {int: 0, num: 11, den: 4}, hint: "Pomnóż całość przez mianownik i dodaj licznik (2 * 4 + 3)." },
+            { id: "zam_2", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$3\\frac{2}{5}$", can: {int: 0, num: 17, den: 5}, hint: "3 * 5 + 2 = ?" },
+            { id: "zam_3", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$5\\frac{1}{6}$", can: {int: 0, num: 31, den: 6}, hint: "5 * 6 + 1 = ?" },
+            { id: "zam_4", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$4\\frac{5}{7}$", can: {int: 0, num: 33, den: 7}, hint: "4 * 7 + 5 = ?" },
+            { id: "zam_5", type: "frac", text: "Zamień liczbę mieszaną na ułamek niewłaściwy:", eq: "$7\\frac{3}{8}$", can: {int: 0, num: 59, den: 8}, hint: "7 * 8 + 3 = ?" },
+
+            // OBLICZENIA (DODAWANIE)
+            { id: "dod_a", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{4}{13} + \\frac{7}{13}$", can: {int: 0, num: 11, den: 13}, hint: "Dodaj liczniki, mianownik zostaw bez zmian." },
+            { id: "dod_b", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{5}{14} + \\frac{11}{14}$", can: {int: 1, num: 1, den: 7}, hint: "Najpierw dodaj, a potem wyłącz całości i skróć wynik." },
+            { id: "dod_c", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{7}{12} + \\frac{1}{12}$", can: {int: 0, num: 2, den: 3}, hint: "Dodaj liczniki, a potem skróć ułamek." },
+            { id: "dod_d", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{8}{15} + \\frac{12}{15}$", can: {int: 1, num: 1, den: 3}, hint: "Otrzymasz ułamek niewłaściwy. Wyłącz z niego całości i skróć." },
+            { id: "dod_e", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{4}{9} + \\frac{7}{9}$", can: {int: 1, num: 2, den: 9}, hint: "Otrzymasz ułamek niewłaściwy. Wyłącz z niego całości." },
+            { id: "dod_f", type: "frac", text: "Oblicz (wynik podaj w najprostszej postaci):", eq: "$\\frac{13}{20} + \\frac{9}{20}$", can: {int: 1, num: 1, den: 10}, hint: "Otrzymasz ułamek niewłaściwy. Wyłącz z niego całości i skróć resztę." }
+        ];
+
+        const container = document.getElementById("tasks-container");
+
+        tasksData.forEach((task, index) => {
+            let taskNumber = index + 1; 
+            resultsData[task.id] = "Nie rozwiązano"; 
+            userAttemptsStructures[task.id] = [];
+            
+            let taskContent = "";
+
+            if (task.type === "compare") {
+                const eq1HTML = renderFractionEquationHTML(task.eq1);
+                const eq2HTML = renderFractionEquationHTML(task.eq2);
+                taskContent = `
+                    <div class="input-group" style="justify-content: center; margin-top: 20px; font-size: 1.3em;">
+                        ${eq1HTML}
+                        <select id="input_${task.id}" class="compareSelect">
+                            <option value="?">Wybierz znak</option>
+                            <option value="<">&lt;</option>
+                            <option value="=">=</option>
+                            <option value=">">&gt;</option>
+                        </select>
+                        ${eq2HTML}
+                    </div>
+                    <div class="input-group" style="justify-content: center; margin-top: 15px;">
+                        <button onclick="checkAnswerCompare('${task.id}')">Sprawdź</button>
+                        <button class="btn-hint" onclick="document.getElementById('hint_${task.id}').style.display='block'">Podpowiedź</button>
+                        <button class="btn-answer" id="btn_answer_${task.id}" style="display: none;" onclick="showAnswerCompare('${task.id}')">Odpowiedź</button>
+                        <span id="feedback_${task.id}" class="feedback"></span>
+                    </div>
+                `;
+            } else {
+                let visualHTML = task.type === "line" ? task.customHTML : renderFractionEquationHTML(task.eq);
+                taskContent = `
+                    ${visualHTML}
+                    <div class="input-group">
+                        <div class="inputContainerFrac" id="input_container_${task.id}">
+                            <input type="text" class="inputInt" id="input_${task.id}_int" placeholder="|?">
+                            <div class="inputFracBox">
+                                <input type="text" class="inputNum" id="input_${task.id}_num" placeholder="L">
+                                <div class="inputLine"></div>
+                                <input type="text" class="inputDen" id="input_${task.id}_den" placeholder="M">
+                            </div>
+                        </div>
+
+                        <button onclick="checkAnswerFraction('${task.id}')">Sprawdź</button>
+                        <button class="btn-hint" onclick="document.getElementById('hint_${task.id}').style.display='block'">Podpowiedź</button>
+                        <button class="btn-answer" id="btn_answer_${task.id}" style="display: none;" onclick="showAnswerFraction('${task.id}')">Odpowiedź</button>
+                        <span id="feedback_${task.id}" class="feedback"></span>
+                    </div>
+                `;
+            }
+
+            container.innerHTML += `
+                <div class="task-card" id="card_${task.id}">
+                    <div class="task-text">
+                        <strong>Zadanie ${taskNumber}.</strong> ${task.text}
+                    </div>
+                    ${taskContent}
+                    <div id="hint_${task.id}" class="hint-text">💡 <strong>Wskazówka:</strong> ${task.hint}</div>
+                </div>
+            `;
+        });
+
+        function checkAnswerCompare(taskId) {
+            const canonical = tasksData.find(t => t.id === taskId).can;
+            const selectEl = document.getElementById(`input_${taskId}`);
+            const feedbackEl = document.getElementById(`feedback_${taskId}`);
+            const cardEl = document.getElementById(`card_${taskId}`);
+            const btnAnswer = document.getElementById(`btn_answer_${taskId}`);
+
+            const val = selectEl.value;
+            cardEl.classList.remove("correct-bg", "incorrect-bg");
+
+            if (val === "?") {
+                return (feedbackEl.textContent = "Wybierz znak!", feedbackEl.className = "feedback incorrect");
+            }
+
+            if (val === canonical) {
+                feedbackEl.textContent = "Dobrze!";
+                feedbackEl.className = "feedback correct";
+                cardEl.classList.add("correct-bg");
+                selectEl.disabled = true;
+                btnAnswer.style.display = "none";
+                if(resultsData[taskId] !== "Podglądał odpowiedź") resultsData[taskId] = "Samodzielnie";
+            } else {
+                feedbackEl.textContent = "Błąd, spróbuj jeszcze raz.";
+                feedbackEl.className = "feedback incorrect";
+                cardEl.classList.add("incorrect-bg");
+                btnAnswer.style.display = "inline-block";
+            }
+        }
+
+        function showAnswerCompare(taskId) {
+            const canonical = tasksData.find(t => t.id === taskId).can;
+            const selectEl = document.getElementById(`input_${taskId}`);
+            selectEl.value = canonical;
+            selectEl.disabled = true;
+            
+            document.getElementById(`card_${taskId}`).classList.remove("incorrect-bg");
+            document.getElementById(`card_${taskId}`).classList.add("correct-bg");
+            
+            const feedbackEl = document.getElementById(`feedback_${taskId}`);
+            feedbackEl.innerHTML = "Oto prawidłowa odpowiedź!";
+            feedbackEl.className = "feedback correct";
+            document.getElementById(`btn_answer_${taskId}`).style.display = "none";
+            
+            resultsData[taskId] = "Podglądał odpowiedź";
+        }
+
+        const valFromField = (id) => {
+            const v = document.getElementById(id).value.trim();
+            return v ? Number(v) : 0;
+        }
+
+        function checkAnswerFraction(taskId) {
+            const canonical = tasksData.find(t => t.id === taskId).can;
+            const feedbackEl = document.getElementById(`feedback_${taskId}`);
+            const cardEl = document.getElementById(`card_${taskId}`);
+            const btnAnswer = document.getElementById(`btn_answer_${taskId}`);
+            
+            const student = {
+                int: valFromField(`input_${taskId}_int`),
+                num: valFromField(`input_${taskId}_num`),
+                den: valFromField(`input_${taskId}_den`)
+            }
+
+            cardEl.classList.remove("correct-bg", "incorrect-bg");
+
+            if (student.int === 0 && student.num === 0 && student.den === 0) {
+                return (feedbackEl.textContent = "Wpisz odpowiedź!", feedbackEl.className = "feedback incorrect");
+            }
+
+            let isCorrect = (student.int === canonical.int && student.num === canonical.num);
+            if (isCorrect && canonical.num !== 0) isCorrect = (student.den === canonical.den);
+
+            if (isCorrect) {
+                feedbackEl.textContent = "Dobrze!"; 
+                feedbackEl.className = "feedback correct"; 
+                cardEl.classList.add("correct-bg");
+                btnAnswer.style.display = "none";
+                
+                document.getElementById(`input_${taskId}_int`).disabled = true;
+                document.getElementById(`input_${taskId}_num`).disabled = true;
+                document.getElementById(`input_${taskId}_den`).disabled = true;
+                
+                if(resultsData[taskId] !== "Podglądał odpowiedź") resultsData[taskId] = "Samodzielnie";
+            } else {
+                const attemptsString = JSON.stringify(student);
+                if (userAttemptsStructures[taskId].includes(attemptsString)) {
+                    feedbackEl.textContent = "Już podałeś taką odpowiedź. Spróbuj inną!";
+                } else {
+                    userAttemptsStructures[taskId].push(attemptsString); 
+                    feedbackEl.textContent = "Błąd, spróbuj jeszcze raz. Pamiętaj o uproszczeniu wyniku (wyłączenie całości / skracanie)!";
+                }
+                feedbackEl.className = "feedback incorrect"; 
+                cardEl.classList.add("incorrect-bg");
+                
+                if (userAttemptsStructures[taskId].length >= 2) btnAnswer.style.display = "inline-block";
+            }
+        }
+
+        function showAnswerFraction(taskId) {
+            const canonical = tasksData.find(t => t.id === taskId).can;
+            document.getElementById(`card_${taskId}`).classList.remove("incorrect-bg");
+            document.getElementById(`card_${taskId}`).classList.add("correct-bg");
+            
+            const intField = document.getElementById(`input_${taskId}_int`);
+            const numField = document.getElementById(`input_${taskId}_num`);
+            const denField = document.getElementById(`input_${taskId}_den`);
+            
+            intField.value = canonical.int || ''; 
+            numField.value = canonical.num || ''; 
+            denField.value = canonical.num !== 0 ? canonical.den : ''; 
+
+            intField.disabled = true; numField.disabled = true; denField.disabled = true;
+
+            const feedbackEl = document.getElementById(`feedback_${taskId}`);
+            feedbackEl.innerHTML = "Oto prawidłowa odpowiedź!";
+            feedbackEl.className = "feedback correct";
+            document.getElementById(`btn_answer_${taskId}`).style.display = "none";
+            
+            resultsData[taskId] = "Podglądał odpowiedź";
+        }
+
+        function sendResults() {
+            let correctCount = 0; let hintCount = 0; let notSolvedCount = 0;
+            let detailedReport = "";
+
+            tasksData.forEach((task, index) => {
+                let taskNumber = index + 1;
+                let answerDetails = "";
+                let wrongAttemptsString = "";
+
+                if (task.type === "compare") {
+                    answerDetails = document.getElementById(`input_${task.id}`).value;
+                } else {
+                    wrongAttemptsString = (userAttemptsStructures[task.id] && userAttemptsStructures[task.id].length > 0) ? `(Błędy: ${userAttemptsStructures[task.id].length})` : "";
+                    const currentInputInt = document.getElementById(`input_${task.id}_int`).value.trim();
+                    const currentInputNum = document.getElementById(`input_${task.id}_num`).value.trim();
+                    const currentInputDen = document.getElementById(`input_${task.id}_den`).value.trim();
+                    
+                    answerDetails = currentInputInt && currentInputInt !== '0' ? currentInputInt : '';
+                    if (currentInputNum && currentInputNum !== '0') {
+                        answerDetails += ` ${currentInputNum}/${currentInputDen}`;
+                    }
+                    answerDetails = answerDetails.trim();
+                }
+
+                if(resultsData[task.id] === "Samodzielnie") {
+                    correctCount++;
+                    detailedReport += `Zadanie ${taskNumber}: Samodzielnie ${wrongAttemptsString} | Odp: ${answerDetails}\n`;
+                }
+                else if(resultsData[task.id] === "Podglądał odpowiedź") {
+                    hintCount++;
+                    detailedReport += `Zadanie ${taskNumber}: Użył odpowiedzi ${wrongAttemptsString}\n`;
+                }
+                else {
+                    notSolvedCount++;
+                    detailedReport += `Zadanie ${taskNumber}: Nie rozwiązano\n`;
+                }
+            });
+
+            const finalMessage = `Uczeń: ${currentStudent}\nKlasa: ${currentClass}\nTEST: UŁAMKI (Skracanie, Całości, Dodawanie)\n\nWYNIK GŁÓWNY:\n- Samodzielnie: ${correctCount} / ${tasksData.length}\n- Z podpowiedzią: ${hintCount} / ${tasksData.length}\n- Puste: ${notSolvedCount} / ${tasksData.length}\n\nSZCZEGÓŁY:\n${detailedReport}`;
+
+            const btnSubmit = document.getElementById("btn-submit");
+            btnSubmit.textContent = "Wysyłanie...";
+            btnSubmit.style.backgroundColor = "#7f8c8d";
+            btnSubmit.disabled = true;
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    access_key: "99356b6c-ab77-4ea0-a3cb-99560d40fafa", 
+                    subject: `Wyniki (Nowe Zadania z Ułamków - 26 zadań): ${currentStudent} (${currentClass})`,
+                    from_name: "Test Matematyczny",
+                    message: finalMessage
+                })
+            })
+            .then(async (response) => {
+                if (response.status == 200) {
+                    document.getElementById("finish-text").innerText = "Udało się! Wyniki zostały wysłane do nauczyciela.";
+                    btnSubmit.style.display = "none";
+                } else {
+                    document.getElementById("finish-text").innerText = "Błąd wysyłania.";
+                    btnSubmit.textContent = "Spróbuj ponownie";
+                    btnSubmit.disabled = false;
+                    btnSubmit.style.backgroundColor = "#e74c3c";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
